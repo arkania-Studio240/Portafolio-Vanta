@@ -1,1 +1,68 @@
-
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Admin · VANTA</title>
+<style>
+:root{--bg:#090A0F;--c:#14161f;--b:#262a38;--t:#e9ebf3;--m:#8b90a5;--a:#7c5cff;--ok:#2ecc71;--er:#ff5d6c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px/1.45 system-ui,sans-serif}
+.w{max-width:1100px;margin:0 auto;padding:16px}h1{font-size:18px;margin:0}h2{font-size:15px;margin:22px 0 8px;color:var(--m);text-transform:uppercase;letter-spacing:.06em}
+.bar{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;margin:14px 0;flex-wrap:wrap}
+button,.btn{background:var(--c);color:var(--t);border:1px solid var(--b);border-radius:10px;padding:9px 14px;font:inherit;cursor:pointer}
+button.on,button.p{background:var(--a);border-color:var(--a)}button.d{color:var(--er)}
+input,select{background:#0d0f16;color:var(--t);border:1px solid var(--b);border-radius:8px;padding:9px;font:inherit;width:100%}
+label{display:block;font-size:12px;color:var(--m);margin:0 0 10px}label input,label select{margin-top:4px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.card{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:14px}
+.big{font-size:30px;font-weight:700}.m{color:var(--m);font-size:12px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}.off{background:#555;box-shadow:none}
+.ch{display:flex;align-items:flex-end;gap:5px;height:120px}.ch div{flex:1;background:var(--a);border-radius:4px 4px 0 0;min-height:2px;position:relative}.ch span{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-size:10px;color:var(--m)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--b);white-space:nowrap}th{color:var(--m);font-weight:500}
+.pr{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px;margin-bottom:10px}
+.msg{padding:10px;border-radius:8px;margin:10px 0}.msg.ok{background:#12301f}.msg.er{background:#3a1519}
+#login{max-width:340px;margin:18vh auto}.hide{display:none!important}
+</style></head><body><div class="w">
+<div id="login" class="card hide"><h1>VANTA · Admin</h1><p class="m" id="lm">Contraseña</p>
+<input id="pw" type="password" autocomplete="current-password" placeholder="Contraseña"><p></p><button class="p" id="go" style="width:100%">Entrar</button><p class="m" id="le"></p></div>
+<div id="app" class="hide">
+<div class="bar"><h1>VANTA · Admin</h1><div><span class="dot" id="od"></span> <b id="on">0</b> en línea &nbsp; <button id="out">Salir</button></div></div>
+<div class="tabs" id="tabs"><button data-t="res" class="on">Resumen</button><button data-t="vis">Visitas</button><button data-t="sit">Sitio</button><button data-t="por">Portafolio</button></div>
+<div id="res"></div><div id="vis" class="hide"></div><div id="sit" class="hide"></div><div id="por" class="hide"></div>
+</div></div>
+<script>
+(function(){'use strict';
+var $=function(s){return document.querySelector(s)},D={prices:{starter:5,channel:25},pay:{starter:'https://www.paypal.com/ncp/payment/TM8AZNUMWGA64',channel:'https://www.paypal.com/ncp/payment/VSJREZKL7NF5C'},
+offer:{enabled:true,regular:17,price:12,until:'2026-11-30',payOffer:'https://www.paypal.com/ncp/payment/B5D87BD57WEVU',payRegular:'https://www.paypal.com/ncp/payment/GK5HPFRZPFDG2'},
+subLink:'https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-0UW32340XY0195020NLY4PGA',
+projects:[{id:'who-are-you',category:'concepts',title:{en:'Who are you?',es:'¿Quién sos?',pt:'Quem é você?'},images:{en:'who-are-you-en.jpg',es:'quien-sos-es.jpg',pt:'quem-e-voce-pt.jpg'}},
+{id:'stop-basta',category:'gaming',title:{en:'Stop',es:'Basta',pt:'Basta'},images:{en:'stop-en.jpg',es:'basta-es-pt.jpg',pt:'basta-es-pt.jpg'}},
+{id:'minecraft-cube-earth',category:'minecraft',title:{en:'Minecraft: Cube Earth',es:'Minecraft: La Tierra cúbica',pt:'Minecraft: A Terra cúbica'},images:{en:'minecraft-cube-earth.jpg',es:'minecraft-cube-earth.jpg',pt:'minecraft-cube-earth.jpg'}}]};
+var cfg=null,stats=null,tab='res',timer=null,L=['en','es','pt'];
+function e(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function api(a,o){return fetch('/api/admin?action='+a,o||{}).then(function(r){return r.json().then(function(j){if(r.status===401&&a!=='login')show(false);return j})})}
+function show(ok,setup){$('#login').classList.toggle('hide',ok);$('#app').classList.toggle('hide',!ok);if(!ok&&setup===false)$('#lm').textContent='Falta definir ADMIN_PASSWORD en Vercel.';if(ok)start()}
+function ago(t){var s=Math.round((Date.now()-t)/1e3);return s<60?s+' s':s<3600?Math.round(s/60)+' min':s<86400?Math.round(s/3600)+' h':Math.round(s/86400)+' d'}
+function dur(s){var m=Math.round((s.last-s.first)/6e4);return m<1?'<1 min':m+' min'}
+function flag(c){return c&&c.length===2?String.fromCodePoint.apply(null,c.toUpperCase().split('').map(function(x){return 127397+x.charCodeAt(0)})):'🌐'}
+function load(){return api('stats').then(function(s){if(s.error){$('#res').innerHTML='<div class="msg er">'+(s.error==='no_db'?'Base de datos no conectada (ver pasos de Redis).':'Error al cargar.')+'</div>';return}stats=s;$('#on').textContent=s.online;$('#od').className='dot'+(s.online?'':' off');render()})}
+function row(s,on){return '<tr><td><span class="dot'+(on?'':' off')+'"></span> '+(on?'En línea':'hace '+ago(s.last))+'</td><td>'+flag(s.country)+' '+e(s.city||s.country||'?')+'</td><td>'+e(s.device)+' · '+e(s.os)+' · '+e(s.browser)+'</td><td>'+e((s.lang||'').toUpperCase())+'</td><td>'+e(s.ref||'directo')+'</td><td>'+s.pages+' vista(s) · '+dur(s)+'</td><td>'+(s.ret?'Recurrente':'Nuevo')+'</td><td>'+e((s.hist||[]).slice(-1)[0]||'')+'</td></tr>'}
+function table(list){var n=stats.now;return '<div class="tw"><table><tr><th>Estado</th><th>Lugar</th><th>Dispositivo</th><th>Idioma</th><th>Origen</th><th>Actividad</th><th>Tipo</th><th>Página</th></tr>'+list.map(function(s){return row(s,n-s.last<75000)}).join('')+'</table></div>'}
+function render(){if(!stats)return;var s=stats,t=s.days[13],mx=Math.max.apply(null,s.days.map(function(d){return d.views}).concat(1)),on=s.sessions.filter(function(x){return s.now-x.last<75000});
+$('#res').innerHTML='<div class="g"><div class="card"><div class="big">'+s.online+'</div><div class="m">En línea ahora</div></div><div class="card"><div class="big">'+t.views+'</div><div class="m">Vistas hoy</div></div><div class="card"><div class="big">'+t.uv+'</div><div class="m">Visitantes únicos hoy</div></div><div class="card"><div class="big">'+s.totalUv+'</div><div class="m">Únicos totales</div></div><div class="card"><div class="big">'+s.totalViews+'</div><div class="m">Vistas totales</div></div></div><h2>Últimos 14 días (vistas)</h2><div class="card"><div class="ch" style="margin-bottom:20px">'+s.days.map(function(d){return '<div title="'+d.d+': '+d.views+' vistas, '+d.uv+' únicos" style="height:'+Math.max(2,d.views/mx*100)+'%"><span>'+d.d.slice(8)+'</span></div>'}).join('')+'</div></div><h2>Ahora mismo</h2>'+(on.length?table(on):'<p class="m">Nadie en el sitio en este momento.</p>');
+var f=($('#q')||{}).value||'';$('#vis').innerHTML='<input id="q" placeholder="Filtrar por país, ciudad, dispositivo, origen…" value="'+e(f)+'"><p class="m">Últimas '+s.sessions.length+' visitas (se guardan 60 días). No se guarda la IP.</p>'+table(s.sessions.filter(function(x){return !f||JSON.stringify(x).toLowerCase().indexOf(f.toLowerCase())>-1}));$('#q').oninput=function(){var p=this.selectionStart;render();$('#q').focus();$('#q').setSelectionRange(p,p)}}
+function F(id,l,v,t){return '<label>'+l+'<input id="'+id+'" type="'+(t||'text')+'" value="'+e(v)+'"></label>'}
+function site(){var c=cfg,o=c.offer;$('#sit').innerHTML='<h2>Precios y pagos (USD)</h2><div class="pr">'+F('p1','Starter · precio',c.prices.starter,'number')+F('l1','Starter · link PayPal',c.pay.starter)+F('p3','Channel Pack · precio',c.prices.channel,'number')+F('l3','Channel Pack · link PayPal',c.pay.channel)+'</div><h2>Multilingual y oferta</h2><div class="pr"><label>Oferta activa<select id="oe"><option value="1"'+(o.enabled?' selected':'')+'>Sí</option><option value="0"'+(o.enabled?'':' selected')+'>No</option></select></label>'+F('or','Precio normal',o.regular,'number')+F('op','Precio oferta',o.price,'number')+F('ou','Oferta hasta',o.until,'date')+F('ol','Link PayPal oferta',o.payOffer)+F('on2','Link PayPal normal',o.payRegular)+'</div><h2>Suscripción</h2><div class="pr">'+F('sl','Link de suscripción PayPal',c.subLink)+'</div><button class="p" id="sv1">Guardar cambios</button><div id="m1"></div>';$('#sv1').onclick=function(){var v=function(i){return $('#'+i).value.trim()};c.prices={starter:+v('p1'),channel:+v('p3')};c.pay={starter:v('l1'),channel:v('l3')};c.offer={enabled:v('oe')==='1',regular:+v('or'),price:+v('op'),until:v('ou'),payOffer:v('ol'),payRegular:v('on2')};c.subLink=v('sl');save('m1')}}
+function por(){var h='<p class="m">Las imágenes deben estar subidas en <b>/images</b> (y su miniatura en <b>/images/thumbs</b>). Aquí pones solo el nombre del archivo.</p>';
+cfg.projects.forEach(function(p,i){h+='<div class="pr" data-i="'+i+'">'+'<label>ID<input data-k="id" value="'+e(p.id)+'"></label><label>Categoría<select data-k="category">'+['gaming','minecraft','concepts'].map(function(c){return '<option'+(p.category===c?' selected':'')+'>'+c+'</option>'}).join('')+'</select></label>'+L.map(function(l){return '<label>Título '+l.toUpperCase()+'<input data-k="t.'+l+'" value="'+e(p.title[l])+'"></label>'}).join('')+L.map(function(l){return '<label>Imagen '+l.toUpperCase()+'<input data-k="i.'+l+'" value="'+e(p.images[l])+'"></label>'}).join('')+'<div><button data-a="up">↑</button> <button data-a="dn">↓</button> <button class="d" data-a="rm">Borrar</button></div></div>'});
+$('#por').innerHTML=h+'<button id="add">+ Agregar proyecto</button> <button class="p" id="sv2">Guardar portafolio</button><div id="m2"></div>';
+function pull(){document.querySelectorAll('#por .pr').forEach(function(d){var p=cfg.projects[+d.dataset.i];d.querySelectorAll('[data-k]').forEach(function(x){var k=x.dataset.k;if(k==='id'||k==='category')p[k]=x.value.trim();else{var g=k[0]==='t'?'title':'images';p[g][k.slice(2)]=x.value.trim()}})})}
+$('#add').onclick=function(){pull();cfg.projects.push({id:'nuevo-'+Date.now().toString(36),category:'concepts',title:{en:'',es:'',pt:''},images:{en:'',es:'',pt:''}});por()};
+$('#sv2').onclick=function(){pull();save('m2')};
+document.querySelectorAll('#por [data-a]').forEach(function(b){b.onclick=function(){pull();var i=+b.parentNode.parentNode.dataset.i,a=b.dataset.a,P=cfg.projects;if(a==='rm'){if(!confirm('¿Borrar este proyecto?'))return;P.splice(i,1)}else{var j=a==='up'?i-1:i+1;if(j<0||j>=P.length)return;var t=P[i];P[i]=P[j];P[j]=t}por()}})}
+function save(m){var box=$('#'+m);box.innerHTML='';fetch('/api/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cfg)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw 0;cfg=merge(j);box.innerHTML='<div class="msg ok">Guardado. El sitio ya usa estos datos (puede tardar ~10 s).</div>'})}).catch(function(){box.innerHTML='<div class="msg er">No se pudo guardar (¿base de datos conectada? ¿sesión activa?).</div>'})}
+function merge(j){var c=JSON.parse(JSON.stringify(D));j=j||{};['prices','pay','offer'].forEach(function(k){if(j[k])Object.assign(c[k],j[k])});if(j.subLink)c.subLink=j.subLink;if(j.projects&&j.projects.length)c.projects=j.projects;c.projects.forEach(function(p){L.forEach(function(l){p.title[l]=p.title[l]||'';p.images[l]=p.images[l]||''})});return c}
+function start(){fetch('/api/config').then(function(r){return r.json()}).then(function(j){cfg=merge(j);site();por()});load();clearInterval(timer);timer=setInterval(function(){if(!document.hidden&&(tab==='res'||tab==='vis'))load()},10000)}
+$('#tabs').onclick=function(ev){var t=ev.target.dataset.t;if(!t)return;tab=t;document.querySelectorAll('#tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});['res','vis','sit','por'].forEach(function(x){$('#'+x).classList.toggle('hide',x!==t)})};
+$('#go').onclick=function(){$('#le').textContent='';api('login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('#pw').value})}).then(function(j){if(j.ok){$('#pw').value='';show(true)}else $('#le').textContent=j.error==='locked'?'Demasiados intentos. Espera 15 min.':j.error==='no_password'?'Falta ADMIN_PASSWORD en Vercel.':'Contraseña incorrecta.'})};
+$('#pw').onkeydown=function(ev){if(ev.key==='Enter')$('#go').click()};
+$('#out').onclick=function(){api('logout',{method:'POST'}).then(function(){show(false)})};
+api('me').then(function(j){show(!!j.auth,j.setup)});
+})();
+</script></body></html>
