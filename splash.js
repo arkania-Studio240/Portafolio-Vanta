@@ -7,7 +7,7 @@
   if (!splash) return;
   if (root.className.indexOf('no-splash') !== -1) { splash.parentNode.removeChild(splash); return; }
 
-  /* Only the visitor's device language is shown. Unlisted languages fall back to English.
+  /* Only the visitor's device language is shown. Unlisted languages fall back to Spanish.
      (Arabic and Indic scripts are left out on purpose: per-letter animation breaks their joined letters.) */
   var WORDS = {
     es: ['Vanta Portafolio', 'Saltar'],
@@ -27,7 +27,7 @@
   var TYPE_MS = 70, HOLD_MS = 650;
 
   var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'en'];
-  var lang = 'en';
+  var lang = 'es';
   for (var k = 0; k < list.length; k++) {
     var code = String(list[k] || '').toLowerCase().split('-')[0];
     if (WORDS[code]) { lang = code; break; }

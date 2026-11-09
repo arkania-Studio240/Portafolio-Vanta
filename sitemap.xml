@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://vanta-portfolio-orcin.vercel.app/</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/who-are-you-en.jpg</image:loc><image:title>Who are you? - YouTube thumbnail (EN)</image:title></image:image>
+    <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/quien-sos-es.jpg</image:loc><image:title>¿Quién sos? - miniatura de YouTube (ES)</image:title></image:image>
+    <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/quem-e-voce-pt.jpg</image:loc><image:title>Quem é você? - thumbnail do YouTube (PT)</image:title></image:image>
+    <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/stop-en.jpg</image:loc><image:title>Stop - YouTube thumbnail (EN)</image:title></image:image>
+    <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/basta-es-pt.jpg</image:loc><image:title>Basta - miniatura de YouTube (ES) / thumbnail do YouTube (PT)</image:title></image:image>
+    <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/minecraft-cube-earth.jpg</image:loc><image:title>Minecraft: Cube Earth - YouTube thumbnail</image:title></image:image>
+  </url>
+  <url><loc>https://vanta-portfolio-orcin.vercel.app/en</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vanta-portfolio-orcin.vercel.app/pt</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+</urlset>

@@ -5,11 +5,18 @@
   'use strict';
 
   var SUPPORTED = ['en', 'es', 'pt'];
-  var DEFAULT_LANG = 'en';
-  var IMG_DIR = 'images/';
-  var THUMB_DIR = 'images/thumbs/';
+  var DEFAULT_LANG = 'es';   /* used when the device language is not supported */
+  /* Folder prefix: '' on the root page, '../' on /en and /pt (works from any host or from local files) */
+  var ROOT = (document.querySelector('script[src$="script.js"]').getAttribute('src') || '').replace('script.js', '');
+  var IMG_DIR = ROOT + 'images/';
+  var THUMB_DIR = ROOT + 'images/thumbs/';
+  function W(n) { return n.replace(/\.jpg$/, '.webp'); } /* WebP in the site, JPG kept as fallback/download */
 
-  var CATEGORIES = ['gaming', 'concepts'];
+  /* Contact form: paste a Formspree (or compatible) endpoint here, e.g. 'https://formspree.io/f/xxxxxxx'.
+     While empty, the form falls back to opening the visitor's mail app (mailto). See SETUP.md. */
+  var FORM_ENDPOINT = '';
+
+  var CATEGORIES = ['gaming', 'minecraft', 'concepts'];
 
   /* Plan prices in USD, same order as packs in I18N: Starter, Multilingual, Channel Pack */
   var PRICES = [5, 15, 25];
@@ -21,23 +28,29 @@
   ];
   /* Real thumbnails shown at the top of each plan, to make the amount you get visible */
   var PREVIEWS = [
-    [['gta-last-day-en.jpg']],
-    [['who-are-you-en.jpg', 'EN'], ['quien-eres-es.jpg', 'ES'], ['quem-e-voce-pt.jpg', 'PT']],
-    [['gta-last-day-en.jpg'], ['who-are-you-en.jpg'], ['gta-ultimo-dia-es.jpg'], ['quien-eres-es.jpg'], ['gta-ultimo-dia-pt.jpg']]
+    [['who-are-you-en.jpg']],
+    [['who-are-you-en.jpg', 'EN'], ['quien-sos-es.jpg', 'ES'], ['quem-e-voce-pt.jpg', 'PT']],
+    [['who-are-you-en.jpg'], ['stop-en.jpg'], ['minecraft-cube-earth.jpg'], ['quien-sos-es.jpg'], ['basta-es-pt.jpg']]
   ];
 
   var PROJECTS = [
     {
       id: 'who-are-you',
       category: 'concepts',
-      title: { en: 'Who are you?', es: '¿Quién eres?', pt: 'Quem é você?' },
-      images: { en: 'who-are-you-en.jpg', es: 'quien-eres-es.jpg', pt: 'quem-e-voce-pt.jpg' }
+      title: { en: 'Who are you?', es: '¿Quién sos?', pt: 'Quem é você?' },
+      images: { en: 'who-are-you-en.jpg', es: 'quien-sos-es.jpg', pt: 'quem-e-voce-pt.jpg' }
     },
     {
-      id: 'gta-last-day',
+      id: 'stop-basta',
       category: 'gaming',
-      title: { en: 'GTA V: The Last Day', es: 'GTA V: El último día', pt: 'GTA V: O último dia' },
-      images: { en: 'gta-last-day-en.jpg', es: 'gta-ultimo-dia-es.jpg', pt: 'gta-ultimo-dia-pt.jpg' }
+      title: { en: 'Stop', es: 'Basta', pt: 'Basta' },
+      images: { en: 'stop-en.jpg', es: 'basta-es-pt.jpg', pt: 'basta-es-pt.jpg' }
+    },
+    {
+      id: 'minecraft-cube-earth',
+      category: 'minecraft',
+      title: { en: 'Minecraft: Cube Earth', es: 'Minecraft: La Tierra cúbica', pt: 'Minecraft: A Terra cúbica' },
+      images: { en: 'minecraft-cube-earth.jpg', es: 'minecraft-cube-earth.jpg', pt: 'minecraft-cube-earth.jpg' }
     }
   ];
 
@@ -48,7 +61,12 @@
       services_title: 'Pick your plan',
       services_sub: 'Fixed prices in USD. Pay securely with PayPal, then send us your brief.',
       pk_hot: 'Most popular',
-      nav_cta: 'Pick a plan', ch_email: 'Email', ch_copy: 'Tap to copy: vanta_creative_studio', how_eyebrow: 'How it works', how_title: 'From idea to thumbnail in three steps',
+      nav_cta: 'Pick a plan', ch_email: 'Email', ch_copy: 'Tap to copy: vanta_creative_studio',
+      lb_modes: 'View mode', lb_full: 'Full size', lb_yt: 'On YouTube', lb_small: 'Small sizes', lb_dark: 'Dark mode', lb_light: 'Light mode', lb_channel: 'Your channel',
+      lb_home: 'Home', lb_search: 'Search results', lb_side: 'Suggested videos', lb_prev: 'Previous', lb_next: 'Next',
+      lb_note_yt: 'Simulation: the duration badge covers the bottom-right corner, so keep important content out of it.',
+      lb_note_small: 'Check that the main text stays readable at small sizes.',
+      alt_thumb: 'YouTube thumbnail designed by VANTA Creative Studios', aria_main: 'Main', aria_lang: 'Language', aria_filter: 'Filter projects', aria_studio: 'Studio', how_eyebrow: 'How it works', how_title: 'From idea to thumbnail in three steps',
       st1_t: 'Pick a plan and pay', st1_d: 'Choose the plan that fits your video and pay securely with PayPal.',
       st2_t: 'Send your brief', st2_d: 'Tell us the topic, the text you want on the image and any references.',
       st3_t: 'Review and receive', st3_d: 'We deliver within your plan\'s time, adjust it with your revisions and send the final file.',
@@ -71,7 +89,7 @@
       f_send: 'Send brief',
       f_or: 'Or write to us directly',
       f_err: 'Please add your name and a short description.',
-      f_subject: 'New brief — VANTA Creative Studios',
+      f_subject: 'New brief — VANTA Creative Studios', soon_t: 'Your project here', soon_s: 'More work is on the way', f_sending: 'Sending…', f_ok: 'Message sent. We will reply to your email.', f_fail: 'Could not send. Please try again or write to vantacreativestudios1@gmail.com.', f_email: 'Email', f_email_bad: 'Enter a valid email.',
       social_label: 'Or find us on', copied: 'Discord username copied!',
       skip: 'Skip to content', nav_work: 'Work', nav_about: 'About', nav_contact: 'Contact',
       hero_title: 'Ideas that get noticed.',
@@ -86,10 +104,10 @@
       contact_title: "Let's create something great.",
       contact_desc: "Tell us about your channel and your next video. We'll reply with ideas.",
       footer_tag: 'Ideas that get noticed.',
-      all: 'All projects', gaming: 'Gaming', concepts: 'Concepts',
+      all: 'All projects', gaming: 'Gaming', minecraft: 'Minecraft', concepts: 'Concepts',
       langName: 'English', close: 'Close', open: 'Open preview', empty: 'No projects in this category yet.',
-      doc_title: 'VANTA Creative Studios | YouTube Thumbnail Design Portfolio',
-      doc_desc: 'VANTA Creative Studios designs eye-catching YouTube thumbnails in English, Spanish and Portuguese. Browse the portfolio.'
+      doc_title: 'YouTube Thumbnail Design | VANTA Creative Studios',
+      doc_desc: 'YouTube thumbnail design in English, Spanish and Portuguese. Browse the VANTA Creative Studios portfolio and pick a plan from $5.'
     },
     es: {
       nav_services: 'Servicios',
@@ -97,7 +115,12 @@
       services_title: 'Elige tu plan',
       services_sub: 'Precios fijos en USD. Paga de forma segura con PayPal y luego envíanos tu brief.',
       pk_hot: 'Más popular',
-      nav_cta: 'Elegir plan', ch_email: 'Correo', ch_copy: 'Toca para copiar: vanta_creative_studio', how_eyebrow: 'Cómo funciona', how_title: 'De la idea a la miniatura en tres pasos',
+      nav_cta: 'Elegir plan', ch_email: 'Correo', ch_copy: 'Toca para copiar: vanta_creative_studio',
+      lb_modes: 'Modo de vista', lb_full: 'Tamaño completo', lb_yt: 'En YouTube', lb_small: 'Tamaños pequeños', lb_dark: 'Modo oscuro', lb_light: 'Modo claro', lb_channel: 'Tu canal',
+      lb_home: 'Inicio', lb_search: 'Resultados de búsqueda', lb_side: 'Videos sugeridos', lb_prev: 'Anterior', lb_next: 'Siguiente',
+      lb_note_yt: 'Simulación: la etiqueta de duración cubre la esquina inferior derecha, así que ahí no debe ir nada importante.',
+      lb_note_small: 'Comprueba que el texto principal siga leyéndose en tamaños reducidos.',
+      alt_thumb: 'Miniatura de YouTube diseñada por VANTA Creative Studios', aria_main: 'Principal', aria_lang: 'Idioma', aria_filter: 'Filtrar proyectos', aria_studio: 'Estudio', how_eyebrow: 'Cómo funciona', how_title: 'De la idea a la miniatura en tres pasos',
       st1_t: 'Elige un plan y paga', st1_d: 'Escoge el plan que se ajusta a tu video y paga de forma segura con PayPal.',
       st2_t: 'Envía tu brief', st2_d: 'Cuéntanos el tema, el texto que quieres en la imagen y tus referencias.',
       st3_t: 'Revisa y recibe', st3_d: 'Entregamos en el plazo de tu plan, lo ajustamos con tus revisiones y te enviamos el archivo final.',
@@ -120,7 +143,7 @@
       f_send: 'Enviar brief',
       f_or: 'O escríbenos directamente',
       f_err: 'Agrega tu nombre y una breve descripción.',
-      f_subject: 'Nuevo brief — VANTA Creative Studios',
+      f_subject: 'Nuevo brief — VANTA Creative Studios', soon_t: 'Tu proyecto aquí', soon_s: 'Pronto más trabajos', f_sending: 'Enviando…', f_ok: 'Mensaje enviado. Te responderemos por correo.', f_fail: 'No se pudo enviar. Inténtalo de nuevo o escribe a vantacreativestudios1@gmail.com.', f_email: 'Correo', f_email_bad: 'Escribe un correo válido.',
       social_label: 'O encuéntranos en', copied: '¡Usuario de Discord copiado!',
       skip: 'Saltar al contenido', nav_work: 'Trabajos', nav_about: 'Nosotros', nav_contact: 'Contacto',
       hero_title: 'Ideas que llaman la atención.',
@@ -135,10 +158,10 @@
       contact_title: 'Creemos algo grandioso.',
       contact_desc: 'Cuéntanos sobre tu canal y tu próximo video. Te responderemos con ideas.',
       footer_tag: 'Ideas que llaman la atención.',
-      all: 'Todos los proyectos', gaming: 'Gaming', concepts: 'Conceptos',
+      all: 'Todos los proyectos', gaming: 'Gaming', minecraft: 'Minecraft', concepts: 'Conceptos',
       langName: 'Español', close: 'Cerrar', open: 'Abrir vista previa', empty: 'Aún no hay proyectos en esta categoría.',
-      doc_title: 'VANTA Creative Studios | Portafolio de miniaturas para YouTube',
-      doc_desc: 'VANTA Creative Studios diseña miniaturas de YouTube llamativas en inglés, español y portugués. Explora el portafolio.'
+      doc_title: 'Diseño de miniaturas para YouTube | VANTA Creative Studios',
+      doc_desc: 'Diseño de miniaturas y thumbnails para YouTube en español, inglés y portugués. Mira el portafolio de VANTA Creative Studios y elige tu plan desde $5.'
     },
     pt: {
       nav_services: 'Serviços',
@@ -146,7 +169,12 @@
       services_title: 'Escolha seu plano',
       services_sub: 'Preços fixos em USD. Pague com segurança pelo PayPal e depois envie seu briefing.',
       pk_hot: 'Mais popular',
-      nav_cta: 'Escolher plano', ch_email: 'E-mail', ch_copy: 'Toque para copiar: vanta_creative_studio', how_eyebrow: 'Como funciona', how_title: 'Da ideia à thumbnail em três passos',
+      nav_cta: 'Escolher plano', ch_email: 'E-mail', ch_copy: 'Toque para copiar: vanta_creative_studio',
+      lb_modes: 'Modo de visualização', lb_full: 'Tamanho completo', lb_yt: 'No YouTube', lb_small: 'Tamanhos pequenos', lb_dark: 'Modo escuro', lb_light: 'Modo claro', lb_channel: 'Seu canal',
+      lb_home: 'Início', lb_search: 'Resultados de busca', lb_side: 'Vídeos sugeridos', lb_prev: 'Anterior', lb_next: 'Próximo',
+      lb_note_yt: 'Simulação: a etiqueta de duração cobre o canto inferior direito, então nada importante deve ficar ali.',
+      lb_note_small: 'Confira se o texto principal continua legível em tamanhos reduzidos.',
+      alt_thumb: 'Thumbnail do YouTube criada pela VANTA Creative Studios', aria_main: 'Principal', aria_lang: 'Idioma', aria_filter: 'Filtrar projetos', aria_studio: 'Estúdio', how_eyebrow: 'Como funciona', how_title: 'Da ideia à thumbnail em três passos',
       st1_t: 'Escolha um plano e pague', st1_d: 'Escolha o plano ideal para o seu vídeo e pague com segurança pelo PayPal.',
       st2_t: 'Envie seu briefing', st2_d: 'Conte o tema, o texto que quer na imagem e suas referências.',
       st3_t: 'Revise e receba', st3_d: 'Entregamos no prazo do seu plano, ajustamos com suas revisões e enviamos o arquivo final.',
@@ -169,7 +197,7 @@
       f_send: 'Enviar briefing',
       f_or: 'Ou escreva diretamente',
       f_err: 'Adicione seu nome e uma breve descrição.',
-      f_subject: 'Novo briefing — VANTA Creative Studios',
+      f_subject: 'Novo briefing — VANTA Creative Studios', soon_t: 'Seu projeto aqui', soon_s: 'Em breve, mais trabalhos', f_sending: 'Enviando…', f_ok: 'Mensagem enviada. Responderemos por e-mail.', f_fail: 'Não foi possível enviar. Tente de novo ou escreva para vantacreativestudios1@gmail.com.', f_email: 'E-mail', f_email_bad: 'Digite um e-mail válido.',
       social_label: 'Ou encontre-nos em', copied: 'Usuário do Discord copiado!',
       skip: 'Ir para o conteúdo', nav_work: 'Trabalhos', nav_about: 'Sobre', nav_contact: 'Contato',
       hero_title: 'Ideias que chamam atenção.',
@@ -184,10 +212,10 @@
       contact_title: 'Vamos criar algo incrível.',
       contact_desc: 'Conte-nos sobre o seu canal e o seu próximo vídeo. Responderemos com ideias.',
       footer_tag: 'Ideias que chamam atenção.',
-      all: 'Todos os projetos', gaming: 'Gaming', concepts: 'Conceitos',
+      all: 'Todos os projetos', gaming: 'Gaming', minecraft: 'Minecraft', concepts: 'Conceitos',
       langName: 'Português', close: 'Fechar', open: 'Abrir pré-visualização', empty: 'Ainda não há projetos nesta categoria.',
-      doc_title: 'VANTA Creative Studios | Portfólio de thumbnails para YouTube',
-      doc_desc: 'A VANTA Creative Studios cria thumbnails de YouTube chamativas em inglês, espanhol e português. Explore o portfólio.'
+      doc_title: 'Design de thumbnails para YouTube | VANTA Creative Studios',
+      doc_desc: 'Design de thumbnails e miniaturas para YouTube em português, inglês e espanhol. Veja o portfólio da VANTA Creative Studios e escolha seu plano a partir de $5.'
     }
   };
 
@@ -214,7 +242,8 @@
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   function imageFor(p, dir) {
-    return dir + (p.images[state.lang] || p.images[DEFAULT_LANG]);
+    /* translated version if it exists, otherwise the original (p.original, or the first image listed) */
+    return dir + W(p.images[state.lang] || p.images[p.original] || p.images[Object.keys(p.images)[0]]);
   }
 
   function applyText() {
@@ -229,6 +258,11 @@
       b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === state.lang));
     });
     lbClose.setAttribute('aria-label', t('close'));
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
+    lbPrev.setAttribute('aria-label', t('lb_prev')); lbNext.setAttribute('aria-label', t('lb_next'));
+    [['meta[property="og:title"]', 'doc_title'], ['meta[property="og:description"]', 'doc_desc'], ['meta[name="twitter:title"]', 'doc_title'], ['meta[name="twitter:description"]', 'doc_desc']].forEach(function (m) {
+      var el = document.querySelector(m[0]); if (el) el.setAttribute('content', t(m[1]));
+    });
   }
 
   function renderFilters() {
@@ -244,12 +278,12 @@
     grid.innerHTML = items.map(function (p, i) {
       var title = p.title[state.lang] || p.title.en;
       return '<button type="button" class="card" data-id="' + p.id + '" style="--d:' + (i * 130) + '" aria-label="' + esc(title + ' — ' + t('open')) + '">' +
-        '<div class="card__media"><img src="' + imageFor(p, THUMB_DIR) + '" alt="' + esc(title) + '" width="720" height="405" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">' +
+        '<div class="card__media"><img src="' + imageFor(p, THUMB_DIR) + '" alt="' + esc(title + '. ' + t('alt_thumb') + ' (' + t('langName') + ')') + '" width="720" height="405" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">' +
         '<span class="card__badge">' + esc(t(p.category)) + '</span><span class="card__langs" aria-hidden="true">' + SUPPORTED.filter(function (l) { return p.images[l]; }).map(function (l) { return '<i' + (l === state.lang ? ' class="on"' : '') + '>' + l.toUpperCase() + '</i>'; }).join('') + '</span><span class="card__zoom" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>' +
         '<div class="card__meta"><span class="avatar" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 32 32"><path d="M6 8l10 17L26 8" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
         '<div><h3 class="card__title">' + esc(title) + '</h3><p class="card__info">VANTA Creative Studios</p>' +
         '<div class="tags"><span class="tag">' + esc(t(p.category)) + '</span><span class="tag tag--lang">' + esc(t('langName')) + '</span></div></div></div></button>';
-    }).join('');
+    }).join('') + (state.filter === 'all' ? '<div class="soon"><b>' + esc(t('soon_t')) + '</b><span>' + esc(t('soon_s')) + '</span></div>' : '');
     renderShowcase();
     observeCards();
   }
@@ -261,7 +295,32 @@
     }).join('');
   }
 
-  var lbId = null, lbPrev = $('#lbPrev'), lbNext = $('#lbNext');
+  var lbId = null, lbMode = 'full', lbPreview = $('#lbPreview'), lbTabs = $('#lbTabs');
+
+  function ytCard(src, title, theme, row) {
+    return '<div class="yt yt--' + theme + (row ? ' yt--row' : '') + '"><div class="yt__thumb"><img src="' + src + '" alt="" width="720" height="405"><span class="yt__dur">10:24</span></div>' +
+      '<div class="yt__meta">' + (row ? '' : '<span class="yt__av" aria-hidden="true">V</span>') + '<div><p class="yt__title">' + esc(title) + '</p><p class="yt__ch">' + esc(t('lb_channel')) + '</p></div></div></div>';
+  }
+  function renderLbMode(p, title) {
+    var thumb = imageFor(p, THUMB_DIR), html = '';
+    lbTabs.querySelectorAll('[data-mode]').forEach(function (b) {
+      var on = b.getAttribute('data-mode') === lbMode; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+    });
+    if (lbMode === 'full') { lbPreview.hidden = true; lbPreview.innerHTML = ''; lbImg.hidden = false; return; }
+    lbImg.hidden = true; lbPreview.hidden = false;
+    if (lbMode === 'yt') {
+      html = '<div class="lb__item">' + ytCard(thumb, title, 'dark') + '<span class="lb__lbl">' + esc(t('lb_home') + ' · ' + t('lb_dark')) + '</span></div>' +
+        '<div class="lb__item">' + ytCard(thumb, title, 'light') + '<span class="lb__lbl">' + esc(t('lb_home') + ' · ' + t('lb_light')) + '</span></div>' +
+        '<div class="lb__item">' + ytCard(thumb, title, 'dark', true) + '<span class="lb__lbl">' + esc(t('lb_side')) + '</span></div>' +
+        '<p class="lb__note">' + esc(t('lb_note_yt')) + '</p>';
+    } else {
+      html = [[360, 'lb_home'], [246, 'lb_search'], [168, 'lb_side']].map(function (z) {
+        return '<div class="lb__item"><img class="lb__small" style="width:' + z[0] + 'px" src="' + thumb + '" alt="" width="720" height="405"><span class="lb__lbl">' + esc(t(z[1]) + ' · ' + z[0] + ' px') + '</span></div>';
+      }).join('') + '<p class="lb__note">' + esc(t('lb_note_small')) + '</p>';
+    }
+    lbPreview.innerHTML = html;
+  }
+  var lbPrev = $('#lbPrev'), lbNext = $('#lbNext');
   function visibleList() { return PROJECTS.filter(function (x) { return state.filter === 'all' || x.category === state.filter; }); }
 
   function openLightbox(id, trigger) {
@@ -276,6 +335,8 @@
     lbImg.style.opacity = r1 && !reduced ? '0' : '';
     lbImg.src = imageFor(p, IMG_DIR);
     lbImg.alt = title;
+    if (wasHidden) lbMode = 'full';
+    renderLbMode(p, title);
     lbCap.innerHTML = '<strong>' + esc(title) + '</strong> · VANTA Creative Studios · ' + esc(t(p.category)) + ' · ' + esc(t('langName')) + (list.length > 1 ? ' · ' + (idx + 1) + ' / ' + list.length : '');
     lightbox.setAttribute('aria-label', title);
     lbPrev.hidden = lbNext.hidden = list.length < 2;
@@ -310,7 +371,7 @@
   function closeLightbox() {
     if (lightbox.hidden) return;
     lightbox.hidden = true;
-    lbImg.removeAttribute('src');
+    lbImg.removeAttribute('src'); lbPreview.innerHTML = '';
     document.body.classList.remove('is-locked');
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
@@ -318,12 +379,17 @@
   function setLang(lang, persist) {
     if (SUPPORTED.indexOf(lang) === -1) lang = DEFAULT_LANG;
     state.lang = lang;
-    if (persist) { try { localStorage.setItem('vanta-lang', lang); } catch (e) {} }
+    if (persist) { try { localStorage.setItem('vanta-lang', lang); if (/^https?:/.test(location.protocol)) history.replaceState(null, '', lang === DEFAULT_LANG ? '/' : '/' + lang); } catch (e) {} }
     applyText(); renderFilters(); renderGrid();
     if (!lightbox.hidden) closeLightbox();
   }
 
   // Events
+  lbTabs.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mode]'); if (!b) return;
+    var p = PROJECTS.filter(function (x) { return x.id === lbId; })[0]; if (!p) return;
+    lbMode = b.getAttribute('data-mode'); renderLbMode(p, p.title[state.lang] || p.title.en);
+  });
   filtersEl.addEventListener('click', function (e) {
     var b = e.target.closest('[data-filter]'); if (!b) return;
     state.filter = b.getAttribute('data-filter'); renderFilters(); renderGrid();
@@ -395,7 +461,7 @@
     $('#packages').innerHTML = P.map(function (p, i) {
       var hot = i === 1;
       return '<article class="pk' + (hot ? ' pk--hot' : '') + '">' + (hot ? '<span class="pk__badge">' + esc(t('pk_hot')) + '</span>' : '') +
-        '<div class="pk__vis pk__vis--' + PREVIEWS[i].length + '" aria-hidden="true">' + PREVIEWS[i].map(function (v) { return '<span class="pk__th"><img src="' + THUMB_DIR + v[0] + '" alt="" loading="lazy" width="720" height="405">' + (v[1] ? '<b>' + v[1] + '</b>' : '') + '</span>'; }).join('') + '</div>' +
+        '<div class="pk__vis pk__vis--' + PREVIEWS[i].length + '" aria-hidden="true">' + PREVIEWS[i].map(function (v) { return '<span class="pk__th"><img src="' + THUMB_DIR + W(v[0]) + '" alt="" loading="lazy" width="720" height="405">' + (v[1] ? '<b>' + v[1] + '</b>' : '') + '</span>'; }).join('') + '</div>' +
         '<h3>' + esc(p[0]) + '</h3>' +
         '<p class="pk__price"><span class="pk__cur">$</span><span class="pk__num">' + PRICES[i] + '</span><span class="pk__usd">USD</span></p>' +
         '<p class="pk__unit">' + esc(p[3]) + '</p>' +
@@ -426,8 +492,17 @@
     $('#briefErr').textContent = '';
     var pk = f.elements.pack.value, packName = pk === '' ? '' : (pk === 'x' ? t('pk_unsure') : packLabel(+pk));
     var langs = Array.prototype.map.call(f.querySelectorAll('[name=lang]:checked'), function (c) { return c.value; }).join(', ');
-    var body = [t('f_name') + ': ' + v('name'), t('f_channel') + ': ' + v('channel'), t('f_pack') + ': ' + packName, t('f_langs') + ': ' + langs, t('f_deadline') + ': ' + v('deadline'), '', t('f_msg') + ':', v('msg')].join('\n');
-    window.location.href = 'mailto:vantacreativestudios1@gmail.com?subject=' + encodeURIComponent(t('f_subject')) + '&body=' + encodeURIComponent(body);
+    var body = [t('f_name') + ': ' + v('name'), t('f_email') + ': ' + v('email'), t('f_channel') + ': ' + v('channel'), t('f_pack') + ': ' + packName, t('f_langs') + ': ' + langs, t('f_deadline') + ': ' + v('deadline'), '', t('f_msg') + ':', v('msg')].join('\n');
+    var email = v('email');
+    if (FORM_ENDPOINT && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { $('#briefErr').textContent = t('f_email_bad'); return; }
+    if (!FORM_ENDPOINT) { window.location.href = 'mailto:vantacreativestudios1@gmail.com?subject=' + encodeURIComponent(t('f_subject')) + '&body=' + encodeURIComponent(body); return; }
+    var btn = f.querySelector('[type=submit]'), label = btn.textContent;
+    btn.disabled = true; btn.textContent = t('f_sending');
+    fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name: v('name'), email: email, channel: v('channel'), pack: packName, languages: langs, deadline: v('deadline'), message: v('msg'), _subject: t('f_subject'), _gotcha: v('website') }) })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); $('#briefErr').textContent = ''; f.reset(); alert(t('f_ok')); })
+      .catch(function () { $('#briefErr').textContent = t('f_fail'); })
+      .then(function () { btn.disabled = false; btn.textContent = label; });
   });
 
   function observeCards() {
@@ -508,14 +583,6 @@
     }
   });
 
-  // Anti-download: block context menu / drag on images and gallery.
-  // (The real protection is that every file in images/ already has the watermark baked in.)
-  ['contextmenu', 'dragstart'].forEach(function (ev) {
-    document.addEventListener(ev, function (e) {
-      if (e.target.closest && e.target.closest('.card, .lightbox, .grid, img')) e.preventDefault();
-    });
-  });
-
   // Cards: subtle 3D tilt that follows the pointer (mouse only)
   if (fine) {
     grid.addEventListener('pointermove', function (e) {
@@ -542,5 +609,6 @@
   // Init: saved manual choice wins, otherwise auto-detect from the device
   var saved = null; try { saved = localStorage.getItem('vanta-lang'); } catch (e) {}
   $('#year').textContent = new Date().getFullYear();
-  setLang(saved && SUPPORTED.indexOf(saved) !== -1 ? saved : detectLang(), false);
+  var pm = location.pathname.match(/^\/(en|pt)(\/|$)/);
+  setLang(pm ? pm[1] : (saved && SUPPORTED.indexOf(saved) !== -1 ? saved : detectLang()), false);
 })();

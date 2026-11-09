@@ -1,49 +1,57 @@
-# VANTA Creative Studios — Portfolio de miniaturas
+# VANTA Creative Studios — sitio web
 
-Portafolio web de VANTA Creative Studios para mostrar diseños de miniaturas de YouTube.
+Sitio estático (HTML + CSS + JavaScript, sin dependencias ni paso de compilación). Portafolio de miniaturas para YouTube en español, inglés y portugués (Brasil).
 
-## Contenido del proyecto
+## Estructura
 
-- `index.html`: estructura principal del sitio.
-- `styles.css`: estilos y diseño visual.
-- `script.js`: comportamiento, traducciones y listado de proyectos.
-- `images/`: imágenes completas utilizadas por el sitio.
-- `images/thumbs/`: versiones optimizadas para las tarjetas del portafolio.
+| Archivo | Para qué sirve |
+|---|---|
+| `index.html` | Página única (HTML estático en español + datos estructurados SEO) |
+| `styles.css` | Estilos (tema oscuro, glass UI, responsive) |
+| `script.js` | Idiomas, galería, vista ampliada, planes, formulario |
+| `splash.js` | Intro de bienvenida (una vez por visita, se puede saltar) |
+| `images/` | Miniaturas en tamaño completo (1280×720 o 1536×864) y `images/thumbs/` (720×405) |
+| `images/og-cover.jpg` | Imagen al compartir el enlace en redes |
+| `robots.txt`, `sitemap.xml` | SEO |
+| `vercel.json` | Cabeceras de seguridad y caché para Vercel |
+| `googled2188803acc59117.html` | Verificación de Google Search Console (no borrar) |
+| `WATERMARKS.md` | Estado de las marcas de agua de las miniaturas |
 
 ## Idiomas
 
-El sitio puede seleccionar el idioma según la configuración del dispositivo/navegador. Cada proyecto debe tener la imagen correspondiente al idioma disponible.
+- Detecta el idioma del dispositivo (español, inglés, portugués). Si no es compatible, usa **español**.
+- El selector ES/EN/PT está siempre visible y cambia el idioma sin recargar; la elección se guarda.
+- Cada miniatura se muestra en el idioma elegido. Si no existe esa versión, se muestra la original (`original` del proyecto, o la primera imagen de la lista).
+- Los textos dentro de las imágenes no se traducen automáticamente.
 
-Idiomas incluidos en los recursos actuales:
-- Español
-- Inglés
-- Portugués
+## Agregar un proyecto
 
-## Correo de contacto
+1. Copia las imágenes a `images/` (1536×864 recomendado) y una copia de 720×405 en `images/thumbs/`, con el mismo nombre.
+2. Añade un objeto a `PROJECTS` en `script.js` (id, categoría, títulos por idioma e `images` por idioma).
+3. Añade la URL de la imagen en `sitemap.xml` si quieres que Google la indexe.
 
-**vantacreativestudios1@gmail.com**
+Nueva categoría: agrégala a `CATEGORIES` y su nombre en cada idioma de `I18N`.
 
-## Cómo publicar el portafolio
+## Planes y pagos
 
-1. Mantén juntos `index.html`, `styles.css`, `script.js` y la carpeta `images/`.
-2. Sube esos archivos a tu servicio de alojamiento web.
-3. Abre la dirección publicada y comprueba que las imágenes y los estilos carguen correctamente.
+Los precios están en `PRICES` y los enlaces de PayPal en `PAY_LINKS` (inicio de `script.js`). Los textos de cada plan están en `I18N`, clave `packs`.
 
-## Cómo agregar una miniatura
+## Marcas de agua
 
-1. Coloca la imagen final dentro de `images/`.
-2. Crea una versión optimizada de aproximadamente `720 × 405 px` y guárdala en `images/thumbs/` con el mismo nombre.
-3. Agrega el proyecto al listado `PROJECTS` de `script.js`.
-4. Comprueba que el proyecto tenga título, categoría, descripción e imágenes para los idiomas disponibles, según la estructura usada por el código.
+Las miniaturas de `images/` ya no llevan marca de agua. Detalle en `WATERMARKS.md`.
 
-## Cómo agregar una categoría o idioma
+## Publicar en Vercel
 
-- Para agregar una categoría, actualiza `CATEGORIES` y las traducciones correspondientes dentro de `I18N` en `script.js`.
-- Para agregar un idioma, añade sus textos a `I18N` y prepara las imágenes localizadas que necesiten los proyectos.
+1. Sube la carpeta a un repositorio de GitHub (o usa Vercel CLI: `npx vercel` dentro de la carpeta).
+2. En vercel.com: **Add New → Project → Import** el repositorio.
+3. Configuración: **Framework Preset: Other**, sin Build Command y sin Output Directory (déjalos vacíos). **Deploy**.
+4. Si usas otro dominio que `vanta-portfolio-orcin.vercel.app`, reemplaza esa URL en `index.html` (canonical, `og:`, JSON-LD), `robots.txt` y `sitemap.xml`.
+5. En Google Search Console envía `https://TU-DOMINIO/sitemap.xml`.
 
-## Recomendaciones
+No subas carpetas con originales (`originals-private/`).
 
-- Conserva los nombres de archivo tal como aparecen en `script.js`.
-- No elimines las carpetas de imágenes.
-- Optimiza las imágenes para que el sitio cargue rápido en celulares.
-- Antes de publicar cambios, prueba el portafolio en Android y en una pantalla de escritorio.
+## Revisión antes de publicar
+
+- Abre la web en móvil y escritorio, cambia de idioma y abre una miniatura (pestañas *Tamaño completo / En YouTube / Tamaños pequeños*).
+- Prueba los botones de PayPal, el enlace de correo y el copiado del usuario de Discord.
+- Comprueba que el enlace de Reddit abre tu perfil.
