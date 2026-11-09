@@ -48,7 +48,7 @@
       services_title: 'Pick your plan',
       services_sub: 'Fixed prices in USD. Pay securely with PayPal, then send us your brief.',
       pk_hot: 'Most popular',
-      nav_cta: 'Pick a plan', how_eyebrow: 'How it works', how_title: 'From idea to thumbnail in three steps',
+      nav_cta: 'Pick a plan', ch_email: 'Email', ch_copy: 'Tap to copy: vanta_creative_studio', how_eyebrow: 'How it works', how_title: 'From idea to thumbnail in three steps',
       st1_t: 'Pick a plan and pay', st1_d: 'Choose the plan that fits your video and pay securely with PayPal.',
       st2_t: 'Send your brief', st2_d: 'Tell us the topic, the text you want on the image and any references.',
       st3_t: 'Review and receive', st3_d: 'We deliver within your plan\'s time, adjust it with your revisions and send the final file.',
@@ -97,7 +97,7 @@
       services_title: 'Elige tu plan',
       services_sub: 'Precios fijos en USD. Paga de forma segura con PayPal y luego envíanos tu brief.',
       pk_hot: 'Más popular',
-      nav_cta: 'Elegir plan', how_eyebrow: 'Cómo funciona', how_title: 'De la idea a la miniatura en tres pasos',
+      nav_cta: 'Elegir plan', ch_email: 'Correo', ch_copy: 'Toca para copiar: vanta_creative_studio', how_eyebrow: 'Cómo funciona', how_title: 'De la idea a la miniatura en tres pasos',
       st1_t: 'Elige un plan y paga', st1_d: 'Escoge el plan que se ajusta a tu video y paga de forma segura con PayPal.',
       st2_t: 'Envía tu brief', st2_d: 'Cuéntanos el tema, el texto que quieres en la imagen y tus referencias.',
       st3_t: 'Revisa y recibe', st3_d: 'Entregamos en el plazo de tu plan, lo ajustamos con tus revisiones y te enviamos el archivo final.',
@@ -146,7 +146,7 @@
       services_title: 'Escolha seu plano',
       services_sub: 'Preços fixos em USD. Pague com segurança pelo PayPal e depois envie seu briefing.',
       pk_hot: 'Mais popular',
-      nav_cta: 'Escolher plano', how_eyebrow: 'Como funciona', how_title: 'Da ideia à thumbnail em três passos',
+      nav_cta: 'Escolher plano', ch_email: 'E-mail', ch_copy: 'Toque para copiar: vanta_creative_studio', how_eyebrow: 'Como funciona', how_title: 'Da ideia à thumbnail em três passos',
       st1_t: 'Escolha um plano e pague', st1_d: 'Escolha o plano ideal para o seu vídeo e pague com segurança pelo PayPal.',
       st2_t: 'Envie seu briefing', st2_d: 'Conte o tema, o texto que quer na imagem e suas referências.',
       st3_t: 'Revise e receba', st3_d: 'Entregamos no prazo do seu plano, ajustamos com suas revisões e enviamos o arquivo final.',
@@ -245,7 +245,7 @@
       var title = p.title[state.lang] || p.title.en;
       return '<button type="button" class="card" data-id="' + p.id + '" style="--d:' + (i * 130) + '" aria-label="' + esc(title + ' — ' + t('open')) + '">' +
         '<div class="card__media"><img src="' + imageFor(p, THUMB_DIR) + '" alt="' + esc(title) + '" width="720" height="405" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">' +
-        '<span class="card__badge">' + esc(t(p.category)) + '</span><span class="card__zoom" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>' +
+        '<span class="card__badge">' + esc(t(p.category)) + '</span><span class="card__langs" aria-hidden="true">' + SUPPORTED.filter(function (l) { return p.images[l]; }).map(function (l) { return '<i' + (l === state.lang ? ' class="on"' : '') + '>' + l.toUpperCase() + '</i>'; }).join('') + '</span><span class="card__zoom" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>' +
         '<div class="card__meta"><span class="avatar" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 32 32"><path d="M6 8l10 17L26 8" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
         '<div><h3 class="card__title">' + esc(title) + '</h3><p class="card__info">VANTA Creative Studios</p>' +
         '<div class="tags"><span class="tag">' + esc(t(p.category)) + '</span><span class="tag tag--lang">' + esc(t('langName')) + '</span></div></div></div></button>';
@@ -514,6 +514,29 @@
     document.addEventListener(ev, function (e) {
       if (e.target.closest && e.target.closest('.card, .lightbox, .grid, img')) e.preventDefault();
     });
+  });
+
+  // Cards: subtle 3D tilt that follows the pointer (mouse only)
+  if (fine) {
+    grid.addEventListener('pointermove', function (e) {
+      var m = e.target.closest && e.target.closest('.card__media'); if (!m) return;
+      var r = m.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      m.style.setProperty('--ry', (x * 7).toFixed(2) + 'deg'); m.style.setProperty('--rx', (-y * 5).toFixed(2) + 'deg');
+    });
+    grid.addEventListener('pointerout', function (e) {
+      var m = e.target.closest && e.target.closest('.card__media');
+      if (m && !m.contains(e.relatedTarget)) { m.style.setProperty('--rx', '0deg'); m.style.setProperty('--ry', '0deg'); }
+    });
+  }
+
+  // Button feedback: soft ripple from the pointer position
+  document.addEventListener('pointerdown', function (e) {
+    var b = e.target.closest && e.target.closest('.btn'); if (!b || reduced) return;
+    var r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2, s = document.createElement('span');
+    s.className = 'rip';
+    s.style.cssText = 'width:' + d + 'px;height:' + d + 'px;left:' + (e.clientX - r.left - d / 2) + 'px;top:' + (e.clientY - r.top - d / 2) + 'px';
+    b.appendChild(s);
+    setTimeout(function () { if (s.parentNode) s.parentNode.removeChild(s); }, 700);
   });
 
   // Init: saved manual choice wins, otherwise auto-detect from the device
