@@ -11,6 +11,21 @@
 
   var CATEGORIES = ['gaming', 'concepts'];
 
+  /* Plan prices in USD, same order as packs in I18N: Starter, Multilingual, Channel Pack */
+  var PRICES = [5, 15, 25];
+  /* PayPal payment links, same order as PRICES */
+  var PAY_LINKS = [
+    'https://www.paypal.com/ncp/payment/TM8AZNUMWGA64',
+    'https://www.paypal.com/ncp/payment/XT6DEAENSRS8Q',
+    'https://www.paypal.com/ncp/payment/VSJREZKL7NF5C'
+  ];
+  /* Real thumbnails shown at the top of each plan, to make the amount you get visible */
+  var PREVIEWS = [
+    [['gta-last-day-en.jpg']],
+    [['who-are-you-en.jpg', 'EN'], ['quien-eres-es.jpg', 'ES'], ['quem-e-voce-pt.jpg', 'PT']],
+    [['gta-last-day-en.jpg'], ['who-are-you-en.jpg'], ['gta-ultimo-dia-es.jpg'], ['quien-eres-es.jpg'], ['gta-ultimo-dia-pt.jpg']]
+  ];
+
   var PROJECTS = [
     {
       id: 'who-are-you',
@@ -31,15 +46,16 @@
       nav_services: 'Services',
       services_eyebrow: 'Services',
       services_title: 'Pick your plan',
-      services_sub: 'Tell us about your video and we\'ll send a quote.',
+      services_sub: 'Fixed prices in USD. Pay securely with PayPal, then send us your brief.',
       pk_hot: 'Most popular',
-      pk_cta: 'Request a quote',
+      pk_cta: 'Pay with PayPal', pk_brief: 'Then send your brief',
+      pk_note: ['Fixed prices in USD', 'Revisions included', 'JPG or PNG, 1920×1080'],
       pk_choose: 'Choose a package',
       pk_unsure: 'Not sure yet',
-      packs: [['Starter', 'One thumbnail, built around one clear idea.', ['1 thumbnail (1920×1080)', '1 language', '2 rounds of revisions', 'Delivery in 48 h']], ['Multilingual', 'The same idea, written natively for each audience.', ['1 thumbnail in EN · ES · PT', '3 rounds of revisions', 'Delivery in 72 h', 'Priority support']], ['Channel Pack', 'A consistent look across a series or a whole channel.', ['5 thumbnails, one visual style', 'Languages of your choice', '3 rounds of revisions each', 'Schedule agreed in the brief']]],
+      packs: [['Starter', 'One thumbnail, built around one clear idea.', ['1 thumbnail (1920×1080)', '1 language', '2 rounds of revisions', 'Delivery in 48 h'], 'For one thumbnail'], ['Multilingual', 'The same idea, written natively for each audience.', ['1 thumbnail in EN · ES · PT', '3 rounds of revisions', 'Delivery in 72 h', 'Priority support'], 'For 3 languages, $5 each'], ['Channel Pack', 'A consistent look across a series or a whole channel.', ['5 thumbnails, one visual style', 'Languages of your choice', '3 rounds of revisions each', 'Schedule agreed in the brief'], 'For 5 thumbnails, $5 each']],
       faq_eyebrow: 'FAQ',
       faq_title: 'Good to know',
-      faq: [['How long does a thumbnail take?', 'Starter takes about 48 hours and Multilingual about 72 hours. Channel Packs follow a schedule we agree on in the brief.'], ['How many revisions are included?', 'Two rounds in Starter and three in Multilingual and Channel Pack, so the result matches your idea.'], ['What do I receive?', 'A high-quality JPG or PNG at 1920×1080 (16:9), optimized for YouTube. Editable files are available on request.'], ['Can I get other languages?', 'Yes. Each language version is designed natively, not a translation pasted over the same image.'], ['How do I start?', 'Send the brief below or write to vantacreativestudios1@gmail.com with your channel and video idea.']],
+      faq: [['How much does it cost?', 'Starter is $5, Multilingual is $15 and Channel Pack is $25. All prices are in USD.'], ['How long does a thumbnail take?', 'Starter takes about 48 hours and Multilingual about 72 hours. Channel Packs follow a schedule we agree on in the brief.'], ['How many revisions are included?', 'Two rounds in Starter and three in Multilingual and Channel Pack, so the result matches your idea.'], ['What do I receive?', 'A high-quality JPG or PNG at 1920×1080 (16:9), optimized for YouTube. Editable files are available on request.'], ['Can I get other languages?', 'Yes. Each language version is designed natively, not a translation pasted over the same image.'], ['How do I start?', 'Send the brief below or write to vantacreativestudios1@gmail.com with your channel and video idea.']],
       f_name: 'Name',
       f_channel: 'Channel or video link',
       f_pack: 'Package',
@@ -75,15 +91,16 @@
       nav_services: 'Servicios',
       services_eyebrow: 'Servicios',
       services_title: 'Elige tu plan',
-      services_sub: 'Cuéntanos sobre tu video y te enviamos una cotización.',
+      services_sub: 'Precios fijos en USD. Paga de forma segura con PayPal y luego envíanos tu brief.',
       pk_hot: 'Más popular',
-      pk_cta: 'Pedir cotización',
+      pk_cta: 'Pagar con PayPal', pk_brief: 'Luego envía tu brief',
+      pk_note: ['Precios fijos en USD', 'Revisiones incluidas', 'JPG o PNG, 1920×1080'],
       pk_choose: 'Elige un paquete',
       pk_unsure: 'Aún no lo sé',
-      packs: [['Starter', 'Una miniatura construida alrededor de una idea clara.', ['1 miniatura (1920×1080)', '1 idioma', '2 rondas de revisiones', 'Entrega en 48 h']], ['Multilingüe', 'La misma idea, escrita de forma nativa para cada audiencia.', ['1 miniatura en EN · ES · PT', '3 rondas de revisiones', 'Entrega en 72 h', 'Soporte prioritario']], ['Pack de canal', 'Un estilo coherente para una serie o todo un canal.', ['5 miniaturas, un mismo estilo visual', 'Idiomas a tu elección', '3 rondas de revisiones cada una', 'Calendario acordado en el brief']]],
+      packs: [['Starter', 'Una miniatura construida alrededor de una idea clara.', ['1 miniatura (1920×1080)', '1 idioma', '2 rondas de revisiones', 'Entrega en 48 h'], 'Por 1 miniatura'], ['Multilingüe', 'La misma idea, escrita de forma nativa para cada audiencia.', ['1 miniatura en EN · ES · PT', '3 rondas de revisiones', 'Entrega en 72 h', 'Soporte prioritario'], 'Por 3 idiomas, $5 c/u'], ['Pack de canal', 'Un estilo coherente para una serie o todo un canal.', ['5 miniaturas, un mismo estilo visual', 'Idiomas a tu elección', '3 rondas de revisiones cada una', 'Calendario acordado en el brief'], 'Por 5 miniaturas, $5 c/u']],
       faq_eyebrow: 'Preguntas',
       faq_title: 'Bueno saber',
-      faq: [['¿Cuánto tarda una miniatura?', 'Starter tarda unas 48 horas y Multilingüe unas 72 horas. Los packs de canal siguen un calendario que acordamos en el brief.'], ['¿Cuántas revisiones incluye?', 'Dos rondas en Starter y tres en Multilingüe y Pack de canal, para que el resultado coincida con tu idea.'], ['¿Qué recibo?', 'Un JPG o PNG de alta calidad a 1920×1080 (16:9), optimizado para YouTube. Los archivos editables están disponibles bajo petición.'], ['¿Puedo tener otros idiomas?', 'Sí. Cada versión se diseña de forma nativa, no es una traducción pegada sobre la misma imagen.'], ['¿Cómo empiezo?', 'Envía el brief de abajo o escribe a vantacreativestudios1@gmail.com con tu canal y la idea del video.']],
+      faq: [['¿Cuánto cuesta?', 'Starter cuesta $5, Multilingüe $15 y Pack de canal $25. Todos los precios están en USD.'], ['¿Cuánto tarda una miniatura?', 'Starter tarda unas 48 horas y Multilingüe unas 72 horas. Los packs de canal siguen un calendario que acordamos en el brief.'], ['¿Cuántas revisiones incluye?', 'Dos rondas en Starter y tres en Multilingüe y Pack de canal, para que el resultado coincida con tu idea.'], ['¿Qué recibo?', 'Un JPG o PNG de alta calidad a 1920×1080 (16:9), optimizado para YouTube. Los archivos editables están disponibles bajo petición.'], ['¿Puedo tener otros idiomas?', 'Sí. Cada versión se diseña de forma nativa, no es una traducción pegada sobre la misma imagen.'], ['¿Cómo empiezo?', 'Envía el brief de abajo o escribe a vantacreativestudios1@gmail.com con tu canal y la idea del video.']],
       f_name: 'Nombre',
       f_channel: 'Canal o enlace del video',
       f_pack: 'Paquete',
@@ -119,15 +136,16 @@
       nav_services: 'Serviços',
       services_eyebrow: 'Serviços',
       services_title: 'Escolha seu plano',
-      services_sub: 'Conte-nos sobre o seu vídeo e enviaremos um orçamento.',
+      services_sub: 'Preços fixos em USD. Pague com segurança pelo PayPal e depois envie seu briefing.',
       pk_hot: 'Mais popular',
-      pk_cta: 'Pedir orçamento',
+      pk_cta: 'Pagar com PayPal', pk_brief: 'Depois envie seu briefing',
+      pk_note: ['Preços fixos em USD', 'Revisões incluídas', 'JPG ou PNG, 1920×1080'],
       pk_choose: 'Escolha um pacote',
       pk_unsure: 'Ainda não sei',
-      packs: [['Starter', 'Uma thumbnail construída em torno de uma ideia clara.', ['1 thumbnail (1920×1080)', '1 idioma', '2 rodadas de revisões', 'Entrega em 48 h']], ['Multilíngue', 'A mesma ideia, escrita nativamente para cada público.', ['1 thumbnail em EN · ES · PT', '3 rodadas de revisões', 'Entrega em 72 h', 'Suporte prioritário']], ['Pacote de canal', 'Um visual consistente para uma série ou um canal inteiro.', ['5 thumbnails, um mesmo estilo visual', 'Idiomas à sua escolha', '3 rodadas de revisões cada', 'Cronograma combinado no briefing']]],
+      packs: [['Starter', 'Uma thumbnail construída em torno de uma ideia clara.', ['1 thumbnail (1920×1080)', '1 idioma', '2 rodadas de revisões', 'Entrega em 48 h'], 'Por 1 thumbnail'], ['Multilíngue', 'A mesma ideia, escrita nativamente para cada público.', ['1 thumbnail em EN · ES · PT', '3 rodadas de revisões', 'Entrega em 72 h', 'Suporte prioritário'], 'Por 3 idiomas, $5 cada'], ['Pacote de canal', 'Um visual consistente para uma série ou um canal inteiro.', ['5 thumbnails, um mesmo estilo visual', 'Idiomas à sua escolha', '3 rodadas de revisões cada', 'Cronograma combinado no briefing'], 'Por 5 thumbnails, $5 cada']],
       faq_eyebrow: 'Perguntas',
       faq_title: 'Bom saber',
-      faq: [['Quanto tempo leva uma thumbnail?', 'Starter leva cerca de 48 horas e Multilíngue cerca de 72 horas. Os pacotes de canal seguem um cronograma combinado no briefing.'], ['Quantas revisões estão incluídas?', 'Duas rodadas no Starter e três no Multilíngue e no Pacote de canal, para que o resultado combine com a sua ideia.'], ['O que eu recebo?', 'Um JPG ou PNG de alta qualidade em 1920×1080 (16:9), otimizado para o YouTube. Arquivos editáveis estão disponíveis sob pedido.'], ['Posso ter outros idiomas?', 'Sim. Cada versão é criada nativamente, não é uma tradução colada sobre a mesma imagem.'], ['Como começo?', 'Envie o briefing abaixo ou escreva para vantacreativestudios1@gmail.com com seu canal e a ideia do vídeo.']],
+      faq: [['Quanto custa?', 'O Starter custa $5, o Multilíngue $15 e o Pacote de canal $25. Todos os preços são em USD.'], ['Quanto tempo leva uma thumbnail?', 'Starter leva cerca de 48 horas e Multilíngue cerca de 72 horas. Os pacotes de canal seguem um cronograma combinado no briefing.'], ['Quantas revisões estão incluídas?', 'Duas rodadas no Starter e três no Multilíngue e no Pacote de canal, para que o resultado combine com a sua ideia.'], ['O que eu recebo?', 'Um JPG ou PNG de alta qualidade em 1920×1080 (16:9), otimizado para o YouTube. Arquivos editáveis estão disponíveis sob pedido.'], ['Posso ter outros idiomas?', 'Sim. Cada versão é criada nativamente, não é uma tradução colada sobre a mesma imagem.'], ['Como começo?', 'Envie o briefing abaixo ou escreva para vantacreativestudios1@gmail.com com seu canal e a ideia do vídeo.']],
       f_name: 'Nome',
       f_channel: 'Canal ou link do vídeo',
       f_pack: 'Pacote',
@@ -339,15 +357,24 @@
     $('#marquee').innerHTML = group + group;
   }
 
+  function packLabel(i) { return t('packs')[i][0] + ' ($' + PRICES[i] + ')'; }
+
   function renderServices() {
     var P = t('packs'), sel = $('#packSelect'), keep = sel.value;
     $('#packages').innerHTML = P.map(function (p, i) {
       var hot = i === 1;
       return '<article class="pk' + (hot ? ' pk--hot' : '') + '">' + (hot ? '<span class="pk__badge">' + esc(t('pk_hot')) + '</span>' : '') +
-        '<h3>' + esc(p[0]) + '</h3><p class="pk__desc">' + esc(p[1]) + '</p><ul>' + p[2].map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
-        '<button type="button" class="btn ' + (hot ? 'btn--primary' : 'btn--ghost') + '" data-pack="' + i + '">' + esc(t('pk_cta')) + '</button></article>';
+        '<div class="pk__vis pk__vis--' + PREVIEWS[i].length + '" aria-hidden="true">' + PREVIEWS[i].map(function (v) { return '<span class="pk__th"><img src="' + THUMB_DIR + v[0] + '" alt="" loading="lazy" width="720" height="405">' + (v[1] ? '<b>' + v[1] + '</b>' : '') + '</span>'; }).join('') + '</div>' +
+        '<h3>' + esc(p[0]) + '</h3>' +
+        '<p class="pk__price"><span class="pk__cur">$</span><span class="pk__num">' + PRICES[i] + '</span><span class="pk__usd">USD</span></p>' +
+        '<p class="pk__unit">' + esc(p[3]) + '</p>' +
+        '<p class="pk__desc">' + esc(p[1]) + '</p>' +
+        '<ul>' + p[2].map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
+        '<a class="btn ' + (hot ? 'btn--primary' : 'btn--ghost') + '" href="' + PAY_LINKS[i] + '" target="_blank" rel="noopener noreferrer">' + esc(t('pk_cta')) + '</a>' +
+        '<button type="button" class="pk__brief" data-pack="' + i + '">' + esc(t('pk_brief')) + '</button></article>';
     }).join('');
-    sel.innerHTML = '<option value="">' + esc(t('pk_choose')) + '</option>' + P.map(function (p, i) { return '<option value="' + i + '">' + esc(p[0]) + '</option>'; }).join('') + '<option value="x">' + esc(t('pk_unsure')) + '</option>';
+    $('#pkNote').innerHTML = t('pk_note').map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('');
+    sel.innerHTML = '<option value="">' + esc(t('pk_choose')) + '</option>' + P.map(function (p, i) { return '<option value="' + i + '">' + esc(packLabel(i)) + '</option>'; }).join('') + '<option value="x">' + esc(t('pk_unsure')) + '</option>';
     sel.value = keep || '';
     $('#faqList').innerHTML = t('faq').map(function (q) { return '<details><summary>' + esc(q[0]) + '</summary><p>' + esc(q[1]) + '</p></details>'; }).join('');
     document.querySelectorAll('.pk').forEach(function (el) { el.classList.add('in'); });
@@ -365,7 +392,7 @@
     var f = e.target, v = function (n) { return (f.elements[n].value || '').trim(); };
     if (!v('name') || !v('msg')) { $('#briefErr').textContent = t('f_err'); return; }
     $('#briefErr').textContent = '';
-    var pk = f.elements.pack.value, packName = pk === '' ? '' : (pk === 'x' ? t('pk_unsure') : t('packs')[+pk][0]);
+    var pk = f.elements.pack.value, packName = pk === '' ? '' : (pk === 'x' ? t('pk_unsure') : packLabel(+pk));
     var langs = Array.prototype.map.call(f.querySelectorAll('[name=lang]:checked'), function (c) { return c.value; }).join(', ');
     var body = [t('f_name') + ': ' + v('name'), t('f_channel') + ': ' + v('channel'), t('f_pack') + ': ' + packName, t('f_langs') + ': ' + langs, t('f_deadline') + ': ' + v('deadline'), '', t('f_msg') + ':', v('msg')].join('\n');
     window.location.href = 'mailto:vantacreativestudios1@gmail.com?subject=' + encodeURIComponent(t('f_subject')) + '&body=' + encodeURIComponent(body);
