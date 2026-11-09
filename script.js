@@ -659,6 +659,33 @@
     setTimeout(function () { if (s.parentNode) s.parentNode.removeChild(s); }, 700);
   });
 
+
+  /* ---- Admin config (/admin): overrides prices, links, offer, subscription and projects ---- */
+  function applyConfig(c) {
+    if (!c || typeof c !== 'object') return;
+    if (c.offer) { OFFER.regular = c.offer.regular; OFFER.price = c.offer.price; OFFER.until = c.offer.enabled ? c.offer.until : '2000-01-01'; if (c.offer.payOffer) OFFER.payOffer = c.offer.payOffer; if (c.offer.payRegular) OFFER.payRegular = c.offer.payRegular; }
+    if (c.prices) PRICES = [c.prices.starter, offerOn() ? OFFER.price : OFFER.regular, c.prices.channel];
+    else if (c.offer) PRICES[1] = offerOn() ? OFFER.price : OFFER.regular;
+    PAY_LINKS = [(c.pay && c.pay.starter) || PAY_LINKS[0], offerOn() ? OFFER.payOffer : OFFER.payRegular, (c.pay && c.pay.channel) || PAY_LINKS[2]];
+    if (c.subLink) { var sb = $('#subscribeBtn'); if (sb) sb.href = c.subLink; }
+    if (c.projects && c.projects.length) { PROJECTS = c.projects; renderShowcase(); }
+    setLang(state.lang, false);
+  }
+  fetch('/api/config').then(function (r) { return r.json(); }).then(applyConfig).catch(function () {});
+
+  /* ---- Visit tracking (no IP stored; the admin's own visits are ignored server-side) ---- */
+  (function () {
+    var vid, ret = true, sid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { vid = localStorage.getItem('vanta-vid'); if (!vid) { ret = false; vid = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('vanta-vid', vid); } } catch (e) { vid = sid; ret = false; }
+    function ping(type) {
+      var d = JSON.stringify({ vid: vid, sid: sid, type: type, ret: ret, path: location.pathname, lang: state.lang, ref: document.referrer });
+      try { fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: d, keepalive: true }); } catch (e) {}
+    }
+    setTimeout(function () { ping('view'); }, 0);
+    setInterval(function () { if (!document.hidden) ping('ping'); }, 30000);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) ping('ping'); });
+  })();
+
   // Init: saved manual choice wins, otherwise auto-detect from the device
   var saved = null; try { saved = localStorage.getItem('vanta-lang'); } catch (e) {}
   $('#year').textContent = new Date().getFullYear();

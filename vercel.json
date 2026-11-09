@@ -1,7 +1,11 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/en", "destination": "/", "permanent": true }
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "trailingSlash": false,
   "headers": [
@@ -32,6 +36,28 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=86400, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/admin",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
         }
       ]
     }
