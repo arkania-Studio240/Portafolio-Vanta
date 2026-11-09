@@ -415,3 +415,8 @@ h1{background:none;-webkit-background-clip:border-box;background-clip:border-box
 @media(max-width:700px){.lightbox{padding-bottom:84px}.lightbox__fig{max-height:calc(100dvh - 150px)}}
 
 .soon{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:220px;border:1px dashed var(--line);border-radius:16px;color:var(--muted,#9aa0b4);text-align:center;padding:20px}.soon b{color:var(--text);font-weight:600}
+
+.pk__pay{display:block;margin:12px auto 0;padding:6px 8px;color:var(--muted);font-size:.86rem;text-align:center;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.pk__pay:hover,.pk__pay:focus-visible{color:var(--text)}
+.pk__offer{margin:14px 0 0;font-size:.82rem;color:var(--muted)}.pk__offer s{margin-right:.4rem;opacity:.8}.pk__offer b{color:var(--accent);font-weight:700}
+.pk__offer+.pk__price{margin-top:6px}

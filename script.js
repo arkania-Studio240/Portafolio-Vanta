@@ -28,11 +28,16 @@
   var CATEGORIES = ['gaming', 'minecraft', 'concepts'];
 
   /* Plan prices in USD, same order as packs in I18N: Starter, Multilingual, Channel Pack */
-  var PRICES = [5, 15, 25];
+  /* Launch offer on the Multilingual plan. The offer is real: after OFFER.until the price goes back to OFFER.regular on its own.
+     Create two PayPal links (one for the offer price, one for the regular price) and paste them in payOffer / payRegular.
+     While a link is empty, that plan shows no PayPal link (you send the payment link by email after the preview is approved). */
+  var OFFER = { pack: 1, regular: 17, price: 12, until: '2026-11-30', payOffer: 'https://www.paypal.com/ncp/payment/B5D87BD57WEVU', payRegular: 'https://www.paypal.com/ncp/payment/GK5HPFRZPFDG2' };
+  function offerOn() { return new Date() <= new Date(OFFER.until + 'T23:59:59'); }
+  var PRICES = [5, offerOn() ? OFFER.price : OFFER.regular, 25];
   /* PayPal payment links, same order as PRICES */
   var PAY_LINKS = [
     'https://www.paypal.com/ncp/payment/TM8AZNUMWGA64',
-    'https://www.paypal.com/ncp/payment/XT6DEAENSRS8Q',
+    offerOn() ? OFFER.payOffer : OFFER.payRegular,
     'https://www.paypal.com/ncp/payment/VSJREZKL7NF5C'
   ];
   /* Real thumbnails shown at the top of each plan, to make the amount you get visible */
@@ -68,7 +73,7 @@
       nav_services: 'Services',
       services_eyebrow: 'Services',
       services_title: 'Pick your plan',
-      services_sub: 'Fixed prices in USD. Pay securely with PayPal, then send us your brief.',
+      services_sub: 'Fixed prices in USD. Send your brief first: you only pay after you approve a preview.',
       pk_hot: 'Most popular',
       nav_cta: 'Pick a plan', ch_email: 'Email', ch_copy: 'Tap to copy: vanta_creative_studio',
       lb_modes: 'View mode', lb_full: 'Full size', lb_yt: 'On YouTube', lb_small: 'Small sizes', lb_dark: 'Dark mode', lb_light: 'Light mode', lb_channel: 'Your channel',
@@ -76,17 +81,18 @@
       lb_note_yt: 'Simulation: the duration badge covers the bottom-right corner, so keep important content out of it.',
       lb_note_small: 'Check that the main text stays readable at small sizes.',
       alt_thumb: 'YouTube thumbnail designed by VANTA Creative Studios', aria_main: 'Main', aria_lang: 'Language', aria_filter: 'Filter projects', aria_studio: 'Studio', how_eyebrow: 'How it works', how_title: 'From idea to thumbnail in three steps',
-      st1_t: 'Pick a plan and pay', st1_d: 'Choose the plan that fits your video and pay securely with PayPal.',
-      st2_t: 'Send your brief', st2_d: 'Tell us the topic, the text you want on the image and any references.',
-      st3_t: 'Review and receive', st3_d: 'We deliver within your plan\'s time, adjust it with your revisions and send the final file.',
-      pk_cta: 'Pay with PayPal', pk_brief: 'Then send your brief',
-      pk_note: ['Fixed prices in USD', 'Revisions included', 'JPG or PNG, 1920×1080'],
+      st1_t: 'Send your brief', st1_d: 'Tell us the topic, the text you want on the image and any references. It\'s free and you pay nothing yet.',
+      st2_t: 'Review your preview', st2_d: 'Within your plan\'s delivery time we send a watermarked preview and adjust it with your revisions.',
+      st3_t: 'Approve, pay and receive', st3_d: 'Once you approve, pay securely with PayPal and get the final file without watermark.',
+      offer_tag: 'Launch offer · {p}% off until {d}', offer_faq: 'launch offer until {d}, then {r}', date_loc: 'en-US',
+      pk_cta: 'Already approved? Pay with PayPal', pk_brief: 'Start with a free brief',
+      pk_note: ['No payment before you approve a preview', 'Paid securely through PayPal', 'Revisions included', 'JPG or PNG, 1920×1080'],
       pk_choose: 'Choose a package',
       pk_unsure: 'Not sure yet',
-      packs: [['Starter', 'One thumbnail, built around one clear idea.', ['1 thumbnail (1920×1080)', '1 language', '2 rounds of revisions', 'Delivery in 48 h'], 'For one thumbnail'], ['Multilingual', 'The same idea, written natively for each audience.', ['1 thumbnail in EN · ES · PT', '3 rounds of revisions', 'Delivery in 72 h', 'Priority support'], 'For 3 languages, $5 each'], ['Channel Pack', 'A consistent look across a series or a whole channel.', ['5 thumbnails, one visual style', 'Languages of your choice', '3 rounds of revisions each', 'Schedule agreed in the brief'], 'For 5 thumbnails, $5 each']],
+      packs: [['Starter', 'One thumbnail, built around one clear idea.', ['1 thumbnail (1920×1080)', '1 language', '2 rounds of revisions', 'Delivery in 48 h'], 'For one thumbnail'], ['Multilingual', 'The same idea, written natively for each audience.', ['1 thumbnail in EN · ES · PT', '3 rounds of revisions', 'Delivery in 72 h', 'Priority support'], 'For 3 languages in one'], ['Channel Pack', 'A consistent look across a series or a whole channel.', ['5 thumbnails, one visual style', 'Languages of your choice', '3 rounds of revisions each', 'Schedule agreed in the brief'], 'For 5 thumbnails, $5 each']],
       faq_eyebrow: 'FAQ',
       faq_title: 'Good to know',
-      faq: [['How much does it cost?', 'Starter is $5, Multilingual is $15 and Channel Pack is $25. All prices are in USD.'], ['How long does a thumbnail take?', 'Starter takes about 48 hours and Multilingual about 72 hours. Channel Packs follow a schedule we agree on in the brief.'], ['How many revisions are included?', 'Two rounds in Starter and three in Multilingual and Channel Pack, so the result matches your idea.'], ['What do I receive?', 'A high-quality JPG or PNG at 1920×1080 (16:9), optimized for YouTube. Editable files are available on request.'], ['Can I get other languages?', 'Yes. Each language version is designed natively, not a translation pasted over the same image.'], ['How do I start?', 'Send the brief below or write to vantacreativestudios1@gmail.com with your channel and video idea.']],
+      faq: [['How much does it cost?', 'Starter is $5, Multilingual is $15 and Channel Pack is $25. All prices are in USD.'], ['How long does a thumbnail take?', 'Starter takes about 48 hours and Multilingual about 72 hours. Channel Packs follow a schedule we agree on in the brief.'], ['How many revisions are included?', 'Two rounds in Starter and three in Multilingual and Channel Pack, so the result matches your idea.'], ['What do I receive?', 'A high-quality JPG or PNG at 1920×1080 (16:9), optimized for YouTube. Editable files are available on request.'], ['Can I get other languages?', 'Yes. Each language version is designed natively, not a translation pasted over the same image.'], ['When do I pay?', 'Only after you approve the watermarked preview. First you send the brief, we reply by email to confirm the details, and we deliver the preview within your plan\'s time.'], ['What if I don\'t like the result?', 'You get the revision rounds included in your plan. If the preview still isn\'t what you need, you don\'t pay.'], ['How do I start?', 'Send the brief below or write to vantacreativestudios1@gmail.com with your channel and video idea.']],
       f_name: 'Name',
       f_channel: 'Channel or video link',
       f_pack: 'Package',
@@ -122,7 +128,7 @@
       nav_services: 'Servicios',
       services_eyebrow: 'Servicios',
       services_title: 'Elige tu plan',
-      services_sub: 'Precios fijos en USD. Paga de forma segura con PayPal y luego envíanos tu brief.',
+      services_sub: 'Precios fijos en USD. Envía primero tu brief: solo pagas cuando apruebas una vista previa.',
       pk_hot: 'Más popular',
       nav_cta: 'Elegir plan', ch_email: 'Correo', ch_copy: 'Toca para copiar: vanta_creative_studio',
       lb_modes: 'Modo de vista', lb_full: 'Tamaño completo', lb_yt: 'En YouTube', lb_small: 'Tamaños pequeños', lb_dark: 'Modo oscuro', lb_light: 'Modo claro', lb_channel: 'Tu canal',
@@ -130,17 +136,18 @@
       lb_note_yt: 'Simulación: la etiqueta de duración cubre la esquina inferior derecha, así que ahí no debe ir nada importante.',
       lb_note_small: 'Comprueba que el texto principal siga leyéndose en tamaños reducidos.',
       alt_thumb: 'Miniatura de YouTube diseñada por VANTA Creative Studios', aria_main: 'Principal', aria_lang: 'Idioma', aria_filter: 'Filtrar proyectos', aria_studio: 'Estudio', how_eyebrow: 'Cómo funciona', how_title: 'De la idea a la miniatura en tres pasos',
-      st1_t: 'Elige un plan y paga', st1_d: 'Escoge el plan que se ajusta a tu video y paga de forma segura con PayPal.',
-      st2_t: 'Envía tu brief', st2_d: 'Cuéntanos el tema, el texto que quieres en la imagen y tus referencias.',
-      st3_t: 'Revisa y recibe', st3_d: 'Entregamos en el plazo de tu plan, lo ajustamos con tus revisiones y te enviamos el archivo final.',
-      pk_cta: 'Pagar con PayPal', pk_brief: 'Luego envía tu brief',
-      pk_note: ['Precios fijos en USD', 'Revisiones incluidas', 'JPG o PNG, 1920×1080'],
+      st1_t: 'Envía tu brief', st1_d: 'Cuéntanos el tema, el texto que quieres en la imagen y tus referencias. Es gratis y todavía no pagas nada.',
+      st2_t: 'Revisa tu vista previa', st2_d: 'En el plazo de tu plan te enviamos una vista previa con marca de agua y la ajustamos con tus revisiones.',
+      st3_t: 'Aprueba, paga y recibe', st3_d: 'Cuando apruebes, paga de forma segura con PayPal y recibe el archivo final sin marca de agua.',
+      offer_tag: 'Oferta de lanzamiento · {p}% menos hasta el {d}', offer_faq: 'oferta de lanzamiento hasta el {d}, luego {r}', date_loc: 'es',
+      pk_cta: '¿Ya aprobaste? Paga con PayPal', pk_brief: 'Empieza con un brief gratis',
+      pk_note: ['Sin pagar hasta que apruebes una vista previa', 'Pago seguro con PayPal', 'Revisiones incluidas', 'JPG o PNG, 1920×1080'],
       pk_choose: 'Elige un paquete',
       pk_unsure: 'Aún no lo sé',
-      packs: [['Starter', 'Una miniatura construida alrededor de una idea clara.', ['1 miniatura (1920×1080)', '1 idioma', '2 rondas de revisiones', 'Entrega en 48 h'], 'Por 1 miniatura'], ['Multilingüe', 'La misma idea, escrita de forma nativa para cada audiencia.', ['1 miniatura en EN · ES · PT', '3 rondas de revisiones', 'Entrega en 72 h', 'Soporte prioritario'], 'Por 3 idiomas, $5 c/u'], ['Pack de canal', 'Un estilo coherente para una serie o todo un canal.', ['5 miniaturas, un mismo estilo visual', 'Idiomas a tu elección', '3 rondas de revisiones cada una', 'Calendario acordado en el brief'], 'Por 5 miniaturas, $5 c/u']],
+      packs: [['Starter', 'Una miniatura construida alrededor de una idea clara.', ['1 miniatura (1920×1080)', '1 idioma', '2 rondas de revisiones', 'Entrega en 48 h'], 'Por 1 miniatura'], ['Multilingüe', 'La misma idea, escrita de forma nativa para cada audiencia.', ['1 miniatura en EN · ES · PT', '3 rondas de revisiones', 'Entrega en 72 h', 'Soporte prioritario'], 'Por 3 idiomas en uno'], ['Pack de canal', 'Un estilo coherente para una serie o todo un canal.', ['5 miniaturas, un mismo estilo visual', 'Idiomas a tu elección', '3 rondas de revisiones cada una', 'Calendario acordado en el brief'], 'Por 5 miniaturas, $5 c/u']],
       faq_eyebrow: 'Preguntas',
       faq_title: 'Bueno saber',
-      faq: [['¿Cuánto cuesta?', 'Starter cuesta $5, Multilingüe $15 y Pack de canal $25. Todos los precios están en USD.'], ['¿Cuánto tarda una miniatura?', 'Starter tarda unas 48 horas y Multilingüe unas 72 horas. Los packs de canal siguen un calendario que acordamos en el brief.'], ['¿Cuántas revisiones incluye?', 'Dos rondas en Starter y tres en Multilingüe y Pack de canal, para que el resultado coincida con tu idea.'], ['¿Qué recibo?', 'Un JPG o PNG de alta calidad a 1920×1080 (16:9), optimizado para YouTube. Los archivos editables están disponibles bajo petición.'], ['¿Puedo tener otros idiomas?', 'Sí. Cada versión se diseña de forma nativa, no es una traducción pegada sobre la misma imagen.'], ['¿Cómo empiezo?', 'Envía el brief de abajo o escribe a vantacreativestudios1@gmail.com con tu canal y la idea del video.']],
+      faq: [['¿Cuánto cuesta?', 'Starter cuesta $5, Multilingüe $15 y Pack de canal $25. Todos los precios están en USD.'], ['¿Cuánto tarda una miniatura?', 'Starter tarda unas 48 horas y Multilingüe unas 72 horas. Los packs de canal siguen un calendario que acordamos en el brief.'], ['¿Cuántas revisiones incluye?', 'Dos rondas en Starter y tres en Multilingüe y Pack de canal, para que el resultado coincida con tu idea.'], ['¿Qué recibo?', 'Un JPG o PNG de alta calidad a 1920×1080 (16:9), optimizado para YouTube. Los archivos editables están disponibles bajo petición.'], ['¿Puedo tener otros idiomas?', 'Sí. Cada versión se diseña de forma nativa, no es una traducción pegada sobre la misma imagen.'], ['¿Cuándo pago?', 'Solo después de aprobar la vista previa con marca de agua. Primero envías el brief, te respondemos por correo para confirmar los detalles y entregamos la vista previa en el plazo de tu plan.'], ['¿Y si no me gusta el resultado?', 'Tienes las rondas de revisiones incluidas en tu plan. Si la vista previa sigue sin ser lo que necesitas, no pagas.'], ['¿Cómo empiezo?', 'Envía el brief de abajo o escribe a vantacreativestudios1@gmail.com con tu canal y la idea del video.']],
       f_name: 'Nombre',
       f_channel: 'Canal o enlace del video',
       f_pack: 'Paquete',
@@ -176,7 +183,7 @@
       nav_services: 'Serviços',
       services_eyebrow: 'Serviços',
       services_title: 'Escolha seu plano',
-      services_sub: 'Preços fixos em USD. Pague com segurança pelo PayPal e depois envie seu briefing.',
+      services_sub: 'Preços fixos em USD. Envie primeiro seu briefing: você só paga depois de aprovar uma prévia.',
       pk_hot: 'Mais popular',
       nav_cta: 'Escolher plano', ch_email: 'E-mail', ch_copy: 'Toque para copiar: vanta_creative_studio',
       lb_modes: 'Modo de visualização', lb_full: 'Tamanho completo', lb_yt: 'No YouTube', lb_small: 'Tamanhos pequenos', lb_dark: 'Modo escuro', lb_light: 'Modo claro', lb_channel: 'Seu canal',
@@ -184,17 +191,18 @@
       lb_note_yt: 'Simulação: a etiqueta de duração cobre o canto inferior direito, então nada importante deve ficar ali.',
       lb_note_small: 'Confira se o texto principal continua legível em tamanhos reduzidos.',
       alt_thumb: 'Thumbnail do YouTube criada pela VANTA Creative Studios', aria_main: 'Principal', aria_lang: 'Idioma', aria_filter: 'Filtrar projetos', aria_studio: 'Estúdio', how_eyebrow: 'Como funciona', how_title: 'Da ideia à thumbnail em três passos',
-      st1_t: 'Escolha um plano e pague', st1_d: 'Escolha o plano ideal para o seu vídeo e pague com segurança pelo PayPal.',
-      st2_t: 'Envie seu briefing', st2_d: 'Conte o tema, o texto que quer na imagem e suas referências.',
-      st3_t: 'Revise e receba', st3_d: 'Entregamos no prazo do seu plano, ajustamos com suas revisões e enviamos o arquivo final.',
-      pk_cta: 'Pagar com PayPal', pk_brief: 'Depois envie seu briefing',
-      pk_note: ['Preços fixos em USD', 'Revisões incluídas', 'JPG ou PNG, 1920×1080'],
+      st1_t: 'Envie seu briefing', st1_d: 'Conte o tema, o texto que quer na imagem e suas referências. É grátis e você ainda não paga nada.',
+      st2_t: 'Revise sua prévia', st2_d: 'No prazo do seu plano enviamos uma prévia com marca d\'água e ajustamos com suas revisões.',
+      st3_t: 'Aprove, pague e receba', st3_d: 'Depois de aprovar, pague com segurança pelo PayPal e receba o arquivo final sem marca d\'água.',
+      offer_tag: 'Oferta de lançamento · {p}% off até {d}', offer_faq: 'oferta de lançamento até {d}, depois {r}', date_loc: 'pt-BR',
+      pk_cta: 'Já aprovou? Pague pelo PayPal', pk_brief: 'Comece com um briefing grátis',
+      pk_note: ['Sem pagar até você aprovar uma prévia', 'Pagamento seguro pelo PayPal', 'Revisões incluídas', 'JPG ou PNG, 1920×1080'],
       pk_choose: 'Escolha um pacote',
       pk_unsure: 'Ainda não sei',
-      packs: [['Starter', 'Uma thumbnail construída em torno de uma ideia clara.', ['1 thumbnail (1920×1080)', '1 idioma', '2 rodadas de revisões', 'Entrega em 48 h'], 'Por 1 thumbnail'], ['Multilíngue', 'A mesma ideia, escrita nativamente para cada público.', ['1 thumbnail em EN · ES · PT', '3 rodadas de revisões', 'Entrega em 72 h', 'Suporte prioritário'], 'Por 3 idiomas, $5 cada'], ['Pacote de canal', 'Um visual consistente para uma série ou um canal inteiro.', ['5 thumbnails, um mesmo estilo visual', 'Idiomas à sua escolha', '3 rodadas de revisões cada', 'Cronograma combinado no briefing'], 'Por 5 thumbnails, $5 cada']],
+      packs: [['Starter', 'Uma thumbnail construída em torno de uma ideia clara.', ['1 thumbnail (1920×1080)', '1 idioma', '2 rodadas de revisões', 'Entrega em 48 h'], 'Por 1 thumbnail'], ['Multilíngue', 'A mesma ideia, escrita nativamente para cada público.', ['1 thumbnail em EN · ES · PT', '3 rodadas de revisões', 'Entrega em 72 h', 'Suporte prioritário'], 'Por 3 idiomas em um'], ['Pacote de canal', 'Um visual consistente para uma série ou um canal inteiro.', ['5 thumbnails, um mesmo estilo visual', 'Idiomas à sua escolha', '3 rodadas de revisões cada', 'Cronograma combinado no briefing'], 'Por 5 thumbnails, $5 cada']],
       faq_eyebrow: 'Perguntas',
       faq_title: 'Bom saber',
-      faq: [['Quanto custa?', 'O Starter custa $5, o Multilíngue $15 e o Pacote de canal $25. Todos os preços são em USD.'], ['Quanto tempo leva uma thumbnail?', 'Starter leva cerca de 48 horas e Multilíngue cerca de 72 horas. Os pacotes de canal seguem um cronograma combinado no briefing.'], ['Quantas revisões estão incluídas?', 'Duas rodadas no Starter e três no Multilíngue e no Pacote de canal, para que o resultado combine com a sua ideia.'], ['O que eu recebo?', 'Um JPG ou PNG de alta qualidade em 1920×1080 (16:9), otimizado para o YouTube. Arquivos editáveis estão disponíveis sob pedido.'], ['Posso ter outros idiomas?', 'Sim. Cada versão é criada nativamente, não é uma tradução colada sobre a mesma imagem.'], ['Como começo?', 'Envie o briefing abaixo ou escreva para vantacreativestudios1@gmail.com com seu canal e a ideia do vídeo.']],
+      faq: [['Quanto custa?', 'O Starter custa $5, o Multilíngue $15 e o Pacote de canal $25. Todos os preços são em USD.'], ['Quanto tempo leva uma thumbnail?', 'Starter leva cerca de 48 horas e Multilíngue cerca de 72 horas. Os pacotes de canal seguem um cronograma combinado no briefing.'], ['Quantas revisões estão incluídas?', 'Duas rodadas no Starter e três no Multilíngue e no Pacote de canal, para que o resultado combine com a sua ideia.'], ['O que eu recebo?', 'Um JPG ou PNG de alta qualidade em 1920×1080 (16:9), otimizado para o YouTube. Arquivos editáveis estão disponíveis sob pedido.'], ['Posso ter outros idiomas?', 'Sim. Cada versão é criada nativamente, não é uma tradução colada sobre a mesma imagem.'], ['Quando eu pago?', 'Somente depois de aprovar a prévia com marca d\'água. Primeiro você envia o briefing, respondemos por e-mail para confirmar os detalhes e entregamos a prévia no prazo do seu plano.'], ['E se eu não gostar do resultado?', 'Você tem as rodadas de revisões incluídas no seu plano. Se a prévia ainda não for o que você precisa, você não paga.'], ['Como começo?', 'Envie o briefing abaixo ou escreva para vantacreativestudios1@gmail.com com seu canal e a ideia do vídeo.']],
       f_name: 'Nome',
       f_channel: 'Canal ou link do vídeo',
       f_pack: 'Pacote',
@@ -444,6 +452,8 @@
     $('#marquee').innerHTML = group + group;
   }
 
+  function faqPrice() { return offerOn() ? '$' + OFFER.price + ' (' + t('offer_faq').replace('{d}', offerDate()).replace('{r}', '$' + OFFER.regular) + ')' : '$' + OFFER.regular; }
+  function offerDate() { return new Date(OFFER.until + 'T12:00:00').toLocaleDateString(t('date_loc'), { day: 'numeric', month: 'long' }); }
   function packLabel(i) { return t('packs')[i][0] + ' ($' + PRICES[i] + ')'; }
 
   var pricesCounted = false;
@@ -472,17 +482,18 @@
       return '<article class="pk' + (hot ? ' pk--hot' : '') + '">' + (hot ? '<span class="pk__badge">' + esc(t('pk_hot')) + '</span>' : '') +
         '<div class="pk__vis pk__vis--' + PREVIEWS[i].length + '" aria-hidden="true">' + PREVIEWS[i].map(function (v) { return '<span class="pk__th"><img src="' + THUMB_DIR + W(v[0]) + IMG_V + '" alt="" loading="lazy" width="720" height="405">' + (v[1] ? '<b>' + v[1] + '</b>' : '') + '</span>'; }).join('') + '</div>' +
         '<h3>' + esc(p[0]) + '</h3>' +
+        (i === OFFER.pack && offerOn() ? '<p class="pk__offer"><s>$' + OFFER.regular + '</s> <b>' + esc(t('offer_tag').replace('{p}', Math.round((1 - OFFER.price / OFFER.regular) * 100)).replace('{d}', offerDate())) + '</b></p>' : '') +
         '<p class="pk__price"><span class="pk__cur">$</span><span class="pk__num">' + PRICES[i] + '</span><span class="pk__usd">USD</span></p>' +
         '<p class="pk__unit">' + esc(p[3]) + '</p>' +
         '<p class="pk__desc">' + esc(p[1]) + '</p>' +
         '<ul>' + p[2].map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
-        '<a class="btn ' + (hot ? 'btn--primary' : 'btn--ghost') + '" href="' + PAY_LINKS[i] + '" target="_blank" rel="noopener noreferrer">' + esc(t('pk_cta')) + '</a>' +
-        '<button type="button" class="pk__brief" data-pack="' + i + '">' + esc(t('pk_brief')) + '</button></article>';
+        '<button type="button" class="btn ' + (hot ? 'btn--primary' : 'btn--ghost') + '" data-pack="' + i + '">' + esc(t('pk_brief')) + '</button>' +
+        (PAY_LINKS[i] ? '<a class="pk__pay" href="' + PAY_LINKS[i] + '" target="_blank" rel="noopener noreferrer">' + esc(t('pk_cta')) + '</a>' : '') + '</article>';
     }).join('');
     $('#pkNote').innerHTML = t('pk_note').map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('');
     sel.innerHTML = '<option value="">' + esc(t('pk_choose')) + '</option>' + P.map(function (p, i) { return '<option value="' + i + '">' + esc(packLabel(i)) + '</option>'; }).join('') + '<option value="x">' + esc(t('pk_unsure')) + '</option>';
     sel.value = keep || '';
-    $('#faqList').innerHTML = t('faq').map(function (q) { return '<details><summary>' + esc(q[0]) + '</summary><p>' + esc(q[1]) + '</p></details>'; }).join('');
+    $('#faqList').innerHTML = t('faq').map(function (q) { return '<details><summary>' + esc(q[0]) + '</summary><p>' + esc(q[1].replace('$15', faqPrice())) + '</p></details>'; }).join('');
     document.querySelectorAll('.pk').forEach(function (el) { el.classList.add('in'); });
     countPrices();
   }
