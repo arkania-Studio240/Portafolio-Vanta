@@ -12,6 +12,6 @@
     <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/basta-es-pt.jpg</image:loc><image:title>Basta - miniatura de YouTube (ES) / thumbnail do YouTube (PT)</image:title></image:image>
     <image:image><image:loc>https://vanta-portfolio-orcin.vercel.app/images/minecraft-cube-earth.jpg</image:loc><image:title>Minecraft: Cube Earth - YouTube thumbnail</image:title></image:image>
   </url>
-  <url><loc>https://vanta-portfolio-orcin.vercel.app/en</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vanta-portfolio-orcin.vercel.app/es</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://vanta-portfolio-orcin.vercel.app/pt</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

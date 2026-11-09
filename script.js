@@ -5,8 +5,8 @@
   'use strict';
 
   var SUPPORTED = ['en', 'es', 'pt'];
-  var DEFAULT_LANG = 'es';   /* used when the device language is not supported */
-  /* Folder prefix: '' on the root page, '../' on /en and /pt (works from any host or from local files) */
+  var DEFAULT_LANG = 'en';   /* used when the device language is not supported */
+  /* Folder prefix: '' on the root page, '../' on /es and /pt (works from any host or from local files) */
   var ROOT = (document.querySelector('script[src$="script.js"]').getAttribute('src') || '').replace('script.js', '');
   var IMG_DIR = ROOT + 'images/';
   var THUMB_DIR = ROOT + 'images/thumbs/';
@@ -618,6 +618,6 @@
   // Init: saved manual choice wins, otherwise auto-detect from the device
   var saved = null; try { saved = localStorage.getItem('vanta-lang'); } catch (e) {}
   $('#year').textContent = new Date().getFullYear();
-  var pm = location.pathname.match(/^\/(en|pt)(\/|$)/);
+  var pm = location.pathname.match(/^\/(es|pt)(\/|$)/);
   setLang(pm ? pm[1] : (saved && SUPPORTED.indexOf(saved) !== -1 ? saved : detectLang()), false);
 })();

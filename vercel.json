@@ -1,5 +1,8 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/en", "destination": "/", "permanent": true }
+  ],
   "trailingSlash": false,
   "headers": [
     {
