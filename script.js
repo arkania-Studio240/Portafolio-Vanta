@@ -10,6 +10,15 @@
   var ROOT = (document.querySelector('script[src$="script.js"]').getAttribute('src') || '').replace('script.js', '');
   var IMG_DIR = ROOT + 'images/';
   var THUMB_DIR = ROOT + 'images/thumbs/';
+  var IMG_V = '?v=3'; /* bump to force browsers to reload images after replacing files */
+  /* If a .webp fails to load, retry once with the .jpg next to it */
+  document.addEventListener('error', function (e) {
+    var el = e.target;
+    if (el && el.tagName === 'IMG' && /\.webp(\?|$)/.test(el.src) && !el.dataset.fb) {
+      el.dataset.fb = '1';
+      el.src = el.src.replace(/\.webp/, '.jpg');
+    }
+  }, true);
   function W(n) { return n.replace(/\.jpg$/, '.webp'); } /* WebP in the site, JPG kept as fallback/download */
 
   /* Contact form: paste a Formspree (or compatible) endpoint here, e.g. 'https://formspree.io/f/xxxxxxx'.
@@ -243,7 +252,7 @@
 
   function imageFor(p, dir) {
     /* translated version if it exists, otherwise the original (p.original, or the first image listed) */
-    return dir + W(p.images[state.lang] || p.images[p.original] || p.images[Object.keys(p.images)[0]]);
+    return dir + W(p.images[state.lang] || p.images[p.original] || p.images[Object.keys(p.images)[0]]) + IMG_V;
   }
 
   function applyText() {
@@ -461,7 +470,7 @@
     $('#packages').innerHTML = P.map(function (p, i) {
       var hot = i === 1;
       return '<article class="pk' + (hot ? ' pk--hot' : '') + '">' + (hot ? '<span class="pk__badge">' + esc(t('pk_hot')) + '</span>' : '') +
-        '<div class="pk__vis pk__vis--' + PREVIEWS[i].length + '" aria-hidden="true">' + PREVIEWS[i].map(function (v) { return '<span class="pk__th"><img src="' + THUMB_DIR + W(v[0]) + '" alt="" loading="lazy" width="720" height="405">' + (v[1] ? '<b>' + v[1] + '</b>' : '') + '</span>'; }).join('') + '</div>' +
+        '<div class="pk__vis pk__vis--' + PREVIEWS[i].length + '" aria-hidden="true">' + PREVIEWS[i].map(function (v) { return '<span class="pk__th"><img src="' + THUMB_DIR + W(v[0]) + IMG_V + '" alt="" loading="lazy" width="720" height="405">' + (v[1] ? '<b>' + v[1] + '</b>' : '') + '</span>'; }).join('') + '</div>' +
         '<h3>' + esc(p[0]) + '</h3>' +
         '<p class="pk__price"><span class="pk__cur">$</span><span class="pk__num">' + PRICES[i] + '</span><span class="pk__usd">USD</span></p>' +
         '<p class="pk__unit">' + esc(p[3]) + '</p>' +
