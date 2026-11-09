@@ -7,7 +7,7 @@
   var SUPPORTED = ['en', 'es', 'pt'];
   var DEFAULT_LANG = 'en';   /* used when the device language is not supported */
   /* Folder prefix: '' on the root page, '../' on /es and /pt (works from any host or from local files) */
-  var ROOT = (document.querySelector('script[src$="script.js"]').getAttribute('src') || '').replace('script.js', '');
+  var ROOT = (document.querySelector('script[src*="script.js"]').getAttribute('src') || '').replace(/script\.js.*$/, '');
   var IMG_DIR = ROOT + 'images/';
   var THUMB_DIR = ROOT + 'images/thumbs/';
   var IMG_V = '?v=3'; /* bump to force browsers to reload images after replacing files */
@@ -70,6 +70,17 @@
 
   var I18N = {
     en: {
+      sub_secure: 'Secure payment with PayPal',
+      sub_btn: 'Subscribe with PayPal',
+      sub_tag: 'Subscription',
+      sub_title: 'VANTA Subscription',
+      sub_desc: 'Ongoing thumbnail design with a consistent look for your channel.',
+      sub_f1: 'Recurring payment with PayPal',
+      sub_f2: 'Cancel anytime from your PayPal account',
+      sub_f3: 'After subscribing, write to us to set up your brief',
+      sub_ok: 'Subscription active. Thank you! Write to us to set up your brief. Reference: {id}',
+      sub_err: 'The payment could not be completed. Please try again.',
+      sub_fail: 'PayPal could not be loaded. Disable your ad blocker or write to us by email.',
       nav_services: 'Services',
       services_eyebrow: 'Services',
       services_title: 'Pick your plan',
@@ -125,6 +136,17 @@
       doc_desc: 'YouTube thumbnail design in English, Spanish and Portuguese. Browse the VANTA Creative Studios portfolio and pick a plan from $5.'
     },
     es: {
+      sub_secure: 'Pago seguro con PayPal',
+      sub_btn: 'Suscribirme con PayPal',
+      sub_tag: 'Suscripción',
+      sub_title: 'Suscripción VANTA',
+      sub_desc: 'Diseño de miniaturas de forma continua, con un estilo coherente para tu canal.',
+      sub_f1: 'Pago recurrente con PayPal',
+      sub_f2: 'Cancela cuando quieras desde tu cuenta de PayPal',
+      sub_f3: 'Después de suscribirte, escríbenos para coordinar tu brief',
+      sub_ok: 'Suscripción activa. ¡Gracias! Escríbenos para coordinar tu brief. Referencia: {id}',
+      sub_err: 'No se pudo completar el pago. Inténtalo de nuevo.',
+      sub_fail: 'No se pudo cargar PayPal. Desactiva tu bloqueador de anuncios o escríbenos por correo.',
       nav_services: 'Servicios',
       services_eyebrow: 'Servicios',
       services_title: 'Elige tu plan',
@@ -180,6 +202,17 @@
       doc_desc: 'Diseño de miniaturas y thumbnails para YouTube en español, inglés y portugués. Mira el portafolio de VANTA Creative Studios y elige tu plan desde $5.'
     },
     pt: {
+      sub_secure: 'Pagamento seguro pelo PayPal',
+      sub_btn: 'Assinar com o PayPal',
+      sub_tag: 'Assinatura',
+      sub_title: 'Assinatura VANTA',
+      sub_desc: 'Design de thumbnails contínuo, com um visual consistente para o seu canal.',
+      sub_f1: 'Pagamento recorrente pelo PayPal',
+      sub_f2: 'Cancele quando quiser pela sua conta do PayPal',
+      sub_f3: 'Depois de assinar, escreva para nós para combinar seu briefing',
+      sub_ok: 'Assinatura ativa. Obrigado! Escreva para nós para combinar seu briefing. Referência: {id}',
+      sub_err: 'Não foi possível concluir o pagamento. Tente novamente.',
+      sub_fail: 'Não foi possível carregar o PayPal. Desative seu bloqueador de anúncios ou escreva por e-mail.',
       nav_services: 'Serviços',
       services_eyebrow: 'Serviços',
       services_title: 'Escolha seu plano',
