@@ -48,6 +48,10 @@
       services_title: 'Pick your plan',
       services_sub: 'Fixed prices in USD. Pay securely with PayPal, then send us your brief.',
       pk_hot: 'Most popular',
+      nav_cta: 'Pick a plan', how_eyebrow: 'How it works', how_title: 'From idea to thumbnail in three steps',
+      st1_t: 'Pick a plan and pay', st1_d: 'Choose the plan that fits your video and pay securely with PayPal.',
+      st2_t: 'Send your brief', st2_d: 'Tell us the topic, the text you want on the image and any references.',
+      st3_t: 'Review and receive', st3_d: 'We deliver within your plan\'s time, adjust it with your revisions and send the final file.',
       pk_cta: 'Pay with PayPal', pk_brief: 'Then send your brief',
       pk_note: ['Fixed prices in USD', 'Revisions included', 'JPG or PNG, 1920×1080'],
       pk_choose: 'Choose a package',
@@ -93,6 +97,10 @@
       services_title: 'Elige tu plan',
       services_sub: 'Precios fijos en USD. Paga de forma segura con PayPal y luego envíanos tu brief.',
       pk_hot: 'Más popular',
+      nav_cta: 'Elegir plan', how_eyebrow: 'Cómo funciona', how_title: 'De la idea a la miniatura en tres pasos',
+      st1_t: 'Elige un plan y paga', st1_d: 'Escoge el plan que se ajusta a tu video y paga de forma segura con PayPal.',
+      st2_t: 'Envía tu brief', st2_d: 'Cuéntanos el tema, el texto que quieres en la imagen y tus referencias.',
+      st3_t: 'Revisa y recibe', st3_d: 'Entregamos en el plazo de tu plan, lo ajustamos con tus revisiones y te enviamos el archivo final.',
       pk_cta: 'Pagar con PayPal', pk_brief: 'Luego envía tu brief',
       pk_note: ['Precios fijos en USD', 'Revisiones incluidas', 'JPG o PNG, 1920×1080'],
       pk_choose: 'Elige un paquete',
@@ -138,6 +146,10 @@
       services_title: 'Escolha seu plano',
       services_sub: 'Preços fixos em USD. Pague com segurança pelo PayPal e depois envie seu briefing.',
       pk_hot: 'Mais popular',
+      nav_cta: 'Escolher plano', how_eyebrow: 'Como funciona', how_title: 'Da ideia à thumbnail em três passos',
+      st1_t: 'Escolha um plano e pague', st1_d: 'Escolha o plano ideal para o seu vídeo e pague com segurança pelo PayPal.',
+      st2_t: 'Envie seu briefing', st2_d: 'Conte o tema, o texto que quer na imagem e suas referências.',
+      st3_t: 'Revise e receba', st3_d: 'Entregamos no prazo do seu plano, ajustamos com suas revisões e enviamos o arquivo final.',
       pk_cta: 'Pagar com PayPal', pk_brief: 'Depois envie seu briefing',
       pk_note: ['Preços fixos em USD', 'Revisões incluídas', 'JPG ou PNG, 1920×1080'],
       pk_choose: 'Escolha um pacote',
@@ -359,6 +371,25 @@
 
   function packLabel(i) { return t('packs')[i][0] + ' ($' + PRICES[i] + ')'; }
 
+  var pricesCounted = false;
+  function countPrices() {
+    var nums = document.querySelectorAll('.pk__num');
+    if (pricesCounted || reduced || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (es) {
+      if (!es.some(function (e) { return e.isIntersecting; })) return;
+      pricesCounted = true; io.disconnect();
+      nums.forEach(function (el, i) {
+        var to = PRICES[i], t0 = performance.now(), dur = 900;
+        (function tick(now) {
+          var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+          el.textContent = Math.round(to * e);
+          if (k < 1) requestAnimationFrame(tick); else el.textContent = to;
+        })(t0);
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (n) { io.observe(n); });
+  }
+
   function renderServices() {
     var P = t('packs'), sel = $('#packSelect'), keep = sel.value;
     $('#packages').innerHTML = P.map(function (p, i) {
@@ -378,6 +409,7 @@
     sel.value = keep || '';
     $('#faqList').innerHTML = t('faq').map(function (q) { return '<details><summary>' + esc(q[0]) + '</summary><p>' + esc(q[1]) + '</p></details>'; }).join('');
     document.querySelectorAll('.pk').forEach(function (el) { el.classList.add('in'); });
+    countPrices();
   }
 
   $('#packages').addEventListener('click', function (e) {
@@ -447,7 +479,7 @@
     var rio = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.section__head,.about > *,.contact,.pk,.faq > *,.faq details').forEach(function (el) { el.classList.add('reveal'); rio.observe(el); });
+    document.querySelectorAll('.section__head,.about > *,.contact,.pk,.faq > *,.faq details,.steps li').forEach(function (el) { el.classList.add('reveal'); rio.observe(el); });
     var links = document.querySelectorAll('.nav a');
     var nio = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
