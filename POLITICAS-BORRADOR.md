@@ -20,6 +20,6 @@ Lo que ya está publicado y se mantiene: primero se envía el brief, VANTA confi
 10. **Precios y oferta**: Multilingüe USD 12 hasta el 30/11/2026 (regular USD 17). ⚠ qué se muestra después de esa fecha (el código ya vuelve solo a USD 17).
 11. **Cada paquete — "qué no incluye"**: ⚠ indica qué excluyes (p. ej. texto fuera de los idiomas elegidos, animaciones, otros tamaños).
 
-12. **Datos personales**: el buzón guarda nombre, correo y mensaje hasta que los borres. ⚠ por cuánto tiempo los conservas y cómo se pide su borrado.
+12. **Datos personales**: ✔ decidido por ti: el buzón conserva nombre, correo y mensaje **30 días** y luego se borran solos. ⚠ falta redactar el aviso para el visitante y cómo se pide un borrado anticipado.
 
 Cuando decidas, te los redacto en ES/EN/PT y los añado como sección del sitio.

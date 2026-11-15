@@ -59,4 +59,7 @@ No subas carpetas con originales (`originals-private/`).
 - Comprueba que el enlace de Reddit abre tu perfil.
 
 ## Panel /admin
-Pestañas: Resumen y Visitas (estadísticas), **Mensajes** (buzón con los briefs y mensajes directos), Sitio (precios y enlaces de pago) y Portafolio (proyectos y **subida de imágenes**). Ver `SETUP.md`.
+Pestañas: Resumen y Visitas (estadísticas), **Mensajes** (buzón con los briefs y mensajes directos; se borran a los 30 días; se puede responder y redactar correos), Sitio (precios y enlaces de pago) y Portafolio (proyectos y **subida de imágenes**). Ver `SETUP.md`.
+
+## Ver en local
+`node local/server.js` → http://localhost:3000 y http://localhost:3000/admin (contraseña local en SETUP.md §0). Carpeta `local/` solo para tu equipo: no se despliega.

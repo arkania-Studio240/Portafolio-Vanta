@@ -1,1 +1,10 @@
-{ "name": "vanta-portfolio", "private": true, "engines": { "node": ">=18" } }
+{
+  "name": "vanta-portfolio",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "local": "node local/server.js"
+  }
+}
