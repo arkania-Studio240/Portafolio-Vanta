@@ -275,6 +275,7 @@ h1{background:none;-webkit-background-clip:border-box;background-clip:border-box
 .chk{display:inline-flex;align-items:center;gap:8px;margin:0 16px 6px 0;color:var(--text);font-size:.9rem;cursor:pointer}
 .chk input{accent-color:var(--accent);width:18px;height:18px}
 .brief .btn{justify-content:center}
+.brief__ok{margin:0;color:#b9a7ff;font-size:.86rem;min-height:0;grid-column:1/-1;text-align:center}
 .brief__err{margin:0;color:#ff8f9a;font-size:.86rem;min-height:1.2em;grid-column:1/-1;text-align:center}
 .or{margin:30px 0 14px}
 
@@ -441,3 +442,10 @@ h1{background:none;-webkit-background-clip:border-box;background-clip:border-box
 @keyframes subSkel{to{background-position:-220% 0}}
 @media(prefers-reduced-motion:reduce){.sub__btn.is-loading::before{animation:none}}
 .btn--lg{width:100%;justify-content:center;min-height:52px;padding:14px 26px;font-size:1.02rem;text-decoration:none}
+
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:55;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 28px rgba(124,92,255,.38);cursor:pointer}
+.fab:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.qdlg{border:1px solid rgba(255,255,255,.12);border-radius:18px;background:#11131b;color:inherit;padding:20px;width:min(440px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}
+.qdlg::backdrop{background:rgba(5,6,10,.72);backdrop-filter:blur(6px)}
+@media(prefers-reduced-motion:no-preference){.fab{transition:transform .2s}.fab:hover{transform:translateY(-2px)}}
+@media print{.fab{display:none}}

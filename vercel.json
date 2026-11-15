@@ -13,6 +13,10 @@
       "source": "/(.*)",
       "headers": [
         {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000"
+        },
+        {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
         },
@@ -40,7 +44,7 @@
       ]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/api/((?!img$).*)",
       "headers": [
         {
           "key": "Cache-Control",

@@ -6,7 +6,9 @@ Sitio estático (HTML + CSS + JavaScript, sin dependencias ni paso de compilaci�
 
 | Archivo | Para qué sirve |
 |---|---|
-| `index.html` | Página única (HTML estático en español + datos estructurados SEO) |
+| `index.html`, `es/index.html`, `pt/index.html` | Una página por idioma (`/`=EN, `/es`, `/pt`); el texto se rellena desde `script.js` |
+| `api/` | Funciones serverless: `config`, `track`, `admin` y `_lib` |
+| `admin/index.html` | Panel privado (`/admin`) |
 | `styles.css` | Estilos (tema oscuro, glass UI, responsive) |
 | `script.js` | Idiomas, galería, vista ampliada, planes, formulario |
 | `splash.js` | Intro de bienvenida (una vez por visita, se puede saltar) |
@@ -55,3 +57,6 @@ No subas carpetas con originales (`originals-private/`).
 - Abre la web en móvil y escritorio, cambia de idioma y abre una miniatura (pestañas *Tamaño completo / En YouTube / Tamaños pequeños*).
 - Prueba los botones de PayPal, el enlace de correo y el copiado del usuario de Discord.
 - Comprueba que el enlace de Reddit abre tu perfil.
+
+## Panel /admin
+Pestañas: Resumen y Visitas (estadísticas), **Mensajes** (buzón con los briefs y mensajes directos), Sitio (precios y enlaces de pago) y Portafolio (proyectos y **subida de imágenes**). Ver `SETUP.md`.
