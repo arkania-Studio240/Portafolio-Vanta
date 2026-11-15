@@ -12,6 +12,9 @@ module.exports = async function (req, res) {
   if (L.isAdmin(req) || /bot|crawl|spider|preview|slurp|headless|lighthouse/i.test(ua)) return res.status(204).end();
   const b = L.body(req), vid = clean(b.vid), sid = clean(b.sid);
   if (!vid || !sid) return res.status(400).end();
+  const rk = 'vanta:rt:' + L.ipHash(req); let hits = 0;
+  try { hits = (await L.redis([['INCR', rk], ['EXPIRE', rk, 600, 'NX']]))[0]; } catch (e) { return res.status(204).end(); }
+  if (hits > 300) return res.status(204).end(); /* per-IP limit: stops anyone from inflating stats or filling Redis */
   try {
     const now = Date.now(), day = new Date(now).toISOString().slice(0, 10), k = 'vanta:s:' + sid;
     const cur = (await L.redis([['GET', k]]))[0];

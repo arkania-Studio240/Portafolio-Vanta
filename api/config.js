@@ -3,12 +3,13 @@ const CATS = ['gaming', 'minecraft', 'concepts'], LANGS = ['en', 'es', 'pt'];
 const num = function (v, d) { v = Number(v); return isFinite(v) && v >= 0 && v <= 100000 ? v : d; };
 const str = function (v, n) { return String(v == null ? '' : v).trim().slice(0, n || 200); };
 const url = function (v) { v = str(v, 500); return /^https:\/\//i.test(v) ? v : ''; };
+const pay = function (v) { v = url(v); return /^https:\/\/(www\.)?(paypal\.com|paypal\.me)\//i.test(v) ? v : ''; };
 function clean(c) {
   c = c || {}; const o = c.offer || {}, p = c.prices || {}, y = c.pay || {};
   const out = {
     prices: { starter: num(p.starter, 5), channel: num(p.channel, 25) },
-    pay: { starter: url(y.starter), channel: url(y.channel) },
-    offer: { enabled: !!o.enabled, regular: num(o.regular, 17), price: num(o.price, 12), until: /^\d{4}-\d{2}-\d{2}$/.test(o.until) ? o.until : '2026-11-30', payOffer: url(o.payOffer), payRegular: url(o.payRegular) },
+    pay: { starter: pay(y.starter), channel: pay(y.channel) },
+    offer: { enabled: !!o.enabled, regular: num(o.regular, 17), price: num(o.price, 12), until: /^\d{4}-\d{2}-\d{2}$/.test(o.until) ? o.until : '2026-11-30', payOffer: pay(o.payOffer), payRegular: pay(o.payRegular) },
     subLink: url(c.subLink), projects: []
   };
   (Array.isArray(c.projects) ? c.projects : []).slice(0, 100).forEach(function (q, i) {

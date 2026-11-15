@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
     if (a === 'login' && req.method === 'POST') {
       if (!process.env.ADMIN_PASSWORD) return res.status(500).json({ error: 'no_password' });
       const rk = 'vanta:rl:' + L.ipHash(req);
-      let n = 0; try { n = (await L.redis([['INCR', rk], ['EXPIRE', rk, 900, 'NX']]))[0]; } catch (e) {}
+      let n = 0; try { n = (await L.redis([['INCR', rk], ['EXPIRE', rk, 900, 'NX']]))[0]; } catch (e) { return res.status(503).json({ error: 'no_db' }); }
       if (n > 8) return res.status(429).json({ error: 'locked' });
       if (!L.same(String(L.body(req).password || ''), process.env.ADMIN_PASSWORD)) return res.status(401).json({ error: 'bad' });
       res.setHeader('Set-Cookie', 'vanta_admin=' + L.token(7) + '; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800');
